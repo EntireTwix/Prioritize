@@ -13,10 +13,10 @@ std::unordered_map<std::string, float> ValueEnum{
     {"Very High", 8.33},
     {"Extremely High", 10}};
 
-auto &PracticallyNone = ValueEnum.at("Practically None");
-auto &VeryLow = ValueEnum.at("Very Low");
-auto &Low = ValueEnum.at("Low");
-auto &Medium = ValueEnum.at("Medium");
-auto &High = ValueEnum.at("High");
-auto &VeryHigh = ValueEnum.at("Very High");
-auto &ExtremelyHigh = ValueEnum.at("Extremely High");
+const auto &PracticallyNone = ValueEnum.at("Practically None");
+const auto &VeryLow = ValueEnum.at("Very Low");
+const auto &Low = ValueEnum.at("Low");
+const auto &Medium = ValueEnum.at("Medium");
+const auto &High = ValueEnum.at("High");
+const auto &VeryHigh = ValueEnum.at("Very High");
+const auto &ExtremelyHigh = ValueEnum.at("Extremely High");
