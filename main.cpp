@@ -19,36 +19,41 @@
 #pragma warning(disable : 4505) // unreferenced local function has been removed
 #endif
 
-// Our state
+//temp
 static bool show_demo_window = true;
-// static bool show_another_window = false;
-static ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
-static const ImGuiWindowFlags window_flags = ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_MenuBar;
+
+static const ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
+static const ImGuiWindowFlags window_flags = ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_MenuBar;
+static bool active_window = true;
 
 void my_display_code()
 {
-    ImGui::Begin("My First Tool", nullptr, window_flags);
+    ImGui::Begin("Dashboard", &active_window, window_flags);
     if (ImGui::BeginMenuBar())
     {
         if (ImGui::BeginMenu("File"))
         {
-            if (ImGui::MenuItem("New"))
-            {
-            }
             if (ImGui::MenuItem("Open", "Ctrl+O"))
             {
             }
             if (ImGui::MenuItem("Save", "Ctrl+S"))
             {
             }
+            if (ImGui::MenuItem("Close", "Ctrl+W"))
+            {
+                active_window = false;
+            }
             ImGui::EndMenu();
         }
         if (ImGui::BeginMenu("Edit"))
         {
-            if (ImGui::MenuItem("values", "Ctrl+V"))
+            if (ImGui::MenuItem("Properties"))
             {
             }
-            if (ImGui::MenuItem("tasks", "Ctrl+T"))
+            if (ImGui::MenuItem("Tasks"))
+            {
+            }
+            if (ImGui::MenuItem("Values"))
             {
             }
             ImGui::EndMenu();
@@ -56,6 +61,8 @@ void my_display_code()
         ImGui::EndMenuBar();
     }
 
+    //float test;
+    //ImGui::SliderFloat("name of Value", &test, 0.0f, 5.0f);
     ImGui::End();
     if (show_demo_window)
         ImGui::ShowDemoWindow(&show_demo_window);
@@ -144,11 +151,16 @@ int main(int argc, char **argv)
     return 0;
 }
 
-//save
-//open
+//change bool
 
-//adding value
-//deleting value
+//0->2 float slider property weight;
+//0->25 int slider per value;
 
-//adding task
-//deleting task
+//if change
+//input
+//apply values per property
+//softmax
+//sort
+//display
+
+//*possible parallel hashmap lib use
