@@ -1,11 +1,5 @@
-// Dear ImGui: standalone example application for GLUT/FreeGLUT + OpenGL2, using legacy fixed pipeline
-// If you are new to Dear ImGui, read documentation from the docs/ folder + read the top of imgui.cpp.
-// Read online: https://github.com/ocornut/imgui/tree/master/docs
-
-// !!! GLUT/FreeGLUT IS OBSOLETE PREHISTORIC SOFTWARE. Using GLUT is not recommended unless you really miss the 90's. !!!
-// !!! If someone or something is teaching you GLUT today, you are being abused. Please show some resistance. !!!
-// !!! Nowadays, prefer using GLFW or SDL instead!
-
+#include "task.hpp"
+#include "enums.hpp"
 #include "imgui.h"
 #include "backends/imgui_impl_glut.h"
 #include "backends/imgui_impl_opengl2.h"
@@ -24,11 +18,10 @@ static bool show_demo_window = true;
 
 static const ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
 static const ImGuiWindowFlags window_flags = ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_MenuBar;
-static bool active_window = true;
 
 void my_display_code()
 {
-    ImGui::Begin("Dashboard", &active_window, window_flags);
+    ImGui::Begin("Dashboard", nullptr, window_flags);
     if (ImGui::BeginMenuBar())
     {
         if (ImGui::BeginMenu("File"))
@@ -39,21 +32,17 @@ void my_display_code()
             if (ImGui::MenuItem("Save", "Ctrl+S"))
             {
             }
-            if (ImGui::MenuItem("Close", "Ctrl+W"))
-            {
-                active_window = false;
-            }
             ImGui::EndMenu();
         }
         if (ImGui::BeginMenu("Edit"))
         {
-            if (ImGui::MenuItem("Properties"))
-            {
-            }
             if (ImGui::MenuItem("Tasks"))
             {
             }
             if (ImGui::MenuItem("Values"))
+            {
+            }
+            if (ImGui::MenuItem("Enums"))
             {
             }
             ImGui::EndMenu();
@@ -61,8 +50,6 @@ void my_display_code()
         ImGui::EndMenuBar();
     }
 
-    //float test;
-    //ImGui::SliderFloat("name of Value", &test, 0.0f, 5.0f);
     ImGui::End();
     if (show_demo_window)
         ImGui::ShowDemoWindow(&show_demo_window);
@@ -70,6 +57,7 @@ void my_display_code()
 
 void glut_display_func()
 {
+    task_buffer.push_back(Task());
     // Start the Dear ImGui frame
     ImGui_ImplOpenGL2_NewFrame();
     ImGui_ImplGLUT_NewFrame();
@@ -96,6 +84,7 @@ void glut_display_func()
 
 int main(int argc, char **argv)
 {
+    //task_buffer.push_back(Task{"Test Task", false});
     // Create GLUT window
     glutInit(&argc, argv);
 #ifdef __FREEGLUT_EXT_H__
@@ -163,4 +152,5 @@ int main(int argc, char **argv)
 //sort
 //display
 
-//*possible parallel hashmap lib use
+//*possible parallel hashmap lib use?
+//wont close?
