@@ -1,3 +1,4 @@
+#include <iostream>
 #include "task.hpp"
 #include "enums.hpp"
 #include "imgui.h"
@@ -50,26 +51,21 @@ void my_display_code()
         }
         ImGui::EndMenuBar();
     }
-    if (ImGui::BeginTable("##table1", 3, table_settings))
+    if (ImGui::BeginTable("##table1", 2, table_settings))
     {
-        ImGui::TableSetupColumn("State", ImGuiTableColumnFlags_WidthFixed);
         ImGui::TableSetupColumn("Name", ImGuiTableColumnFlags_WidthStretch);
         ImGui::TableSetupColumn("Score", ImGuiTableColumnFlags_WidthFixed);
+        // ImGui::TableHeadersRow();
         UpdateScores();
         for (Task &t : task_buffer)
         {
-            static bool checkbox_flag;
             ImGui::TableNextRow();
             ImGui::TableSetColumnIndex(0);
-            ImGui::Checkbox("", &checkbox_flag);
-            ImGui::TableSetColumnIndex(1);
-            ImGui::Text(t.name.c_str());
-            ImGui::TableSetColumnIndex(2);
-            if (checkbox_flag != t.state)
+            if (ImGui::Checkbox(t.name.c_str(), &t.state)) //if there is a change
             {
                 change_flag = true;
-                t.state = checkbox_flag;
             }
+            ImGui::TableSetColumnIndex(1);
             if (!t.state)
             {
                 ImGui::TextColored(ImVec4(t.score, 1 - t.score, 0.0f, 1.0f), "%d%%", (int)(t.score * 100));
@@ -82,6 +78,7 @@ void my_display_code()
         ImGui::EndTable();
     }
     ImGui::End();
+
     if (show_demo_window)
         ImGui::ShowDemoWindow(&show_demo_window);
 }
@@ -115,7 +112,9 @@ void glut_display_func()
 
 int main(int argc, char **argv)
 {
-    task_buffer.push_back(Task{"Test Task", 0, 0, {PracticallyNone, Medium}});
+    task_buffer.push_back(Task{"A", 0.25, 0, {PracticallyNone, Medium}});
+    task_buffer.push_back(Task{"B", 0.50, 0, {ExtremelyHigh, Low}});
+    task_buffer.push_back(Task{"C", 0.10, 0, {VeryLow, High}});
 
     // Create GLUT window
     glutInit(&argc, argv);
