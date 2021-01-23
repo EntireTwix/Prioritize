@@ -112,9 +112,11 @@ void glut_display_func()
 
 int main(int argc, char **argv)
 {
-    task_buffer.push_back(Task{"A", 0.25, 0, {PracticallyNone, Medium}});
-    task_buffer.push_back(Task{"B", 0.50, 0, {ExtremelyHigh, Low}});
-    task_buffer.push_back(Task{"C", 0.10, 0, {VeryLow, High}});
+    values.push_back({"Effort", 0.9});
+    values.push_back({"Time", 1.5});
+    task_buffer.push_back({"A", 0, 0, {PracticallyNone, Medium}});
+    task_buffer.push_back({"B", 0, 0, {ExtremelyHigh, Low}});
+    task_buffer.push_back({"C", 0, 0, {VeryLow, High}});
 
     // Create GLUT window
     glutInit(&argc, argv);
