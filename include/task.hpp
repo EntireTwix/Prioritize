@@ -22,10 +22,11 @@ inline void UpdateScores()
     float sum, total_sum = 0;
     if (change_flag) //only updates when changes are made
     {
-        sum = 0;
 
         for (Task &t : task_buffer)
         {
+            sum = 0;
+
             //resize
             t.task_values.resize(values.size()); //so that newly added values dont throw with old tasks
 
