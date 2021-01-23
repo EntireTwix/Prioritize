@@ -17,7 +17,8 @@
 static bool show_demo_window = true;
 
 static const ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
-static const ImGuiWindowFlags window_flags = ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_MenuBar;
+static const ImGuiWindowFlags window_flags = ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_MenuBar | ImGuiWindowFlags_NoTitleBar;
+static const ImGuiTableFlags table_settings = ImGuiTableFlags_BordersInnerV | ImGuiTableFlags_BordersOuterV | ImGuiTableFlags_BordersInnerV | ImGuiTableFlags_BordersOuterH;
 
 void my_display_code()
 {
@@ -49,7 +50,37 @@ void my_display_code()
         }
         ImGui::EndMenuBar();
     }
-
+    if (ImGui::BeginTable("##table1", 3, table_settings))
+    {
+        ImGui::TableSetupColumn("State", ImGuiTableColumnFlags_WidthFixed);
+        ImGui::TableSetupColumn("Name", ImGuiTableColumnFlags_WidthStretch);
+        ImGui::TableSetupColumn("Score", ImGuiTableColumnFlags_WidthFixed);
+        UpdateScores();
+        for (Task &t : task_buffer)
+        {
+            static bool checkbox_flag;
+            ImGui::TableNextRow();
+            ImGui::TableSetColumnIndex(0);
+            ImGui::Checkbox("", &checkbox_flag);
+            ImGui::TableSetColumnIndex(1);
+            ImGui::Text(t.name.c_str());
+            ImGui::TableSetColumnIndex(2);
+            if (checkbox_flag != t.state)
+            {
+                change_flag = true;
+                t.state = checkbox_flag;
+            }
+            if (!t.state)
+            {
+                ImGui::TextColored(ImVec4(t.score, 1 - t.score, 0.0f, 1.0f), "%d%%", (int)(t.score * 100));
+            }
+            else
+            {
+                ImGui::TextColored(ImVec4(0.0f, 1.0f, 0.0f, 1.0f), "Done!");
+            }
+        }
+        ImGui::EndTable();
+    }
     ImGui::End();
     if (show_demo_window)
         ImGui::ShowDemoWindow(&show_demo_window);
@@ -57,7 +88,7 @@ void my_display_code()
 
 void glut_display_func()
 {
-    task_buffer.push_back(Task());
+
     // Start the Dear ImGui frame
     ImGui_ImplOpenGL2_NewFrame();
     ImGui_ImplGLUT_NewFrame();
@@ -84,7 +115,8 @@ void glut_display_func()
 
 int main(int argc, char **argv)
 {
-    //task_buffer.push_back(Task{"Test Task", false});
+    task_buffer.push_back(Task{"Test Task", 0, 0, {PracticallyNone, Medium}});
+
     // Create GLUT window
     glutInit(&argc, argv);
 #ifdef __FREEGLUT_EXT_H__

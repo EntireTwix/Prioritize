@@ -12,6 +12,7 @@ struct Value
 static std::vector<Value> values;
 static std::vector<float> enumFloats{0, 1.66, 3.33, 5, 6, 8.33, 10};
 
+//for gui usage
 enum ValEnum
 {
     PracticallyNone,
