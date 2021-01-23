@@ -10,7 +10,7 @@ struct Task
     std::vector<int> task_values; //x being the value index, the int being the enum
     bool operator<(const Task &t) const
     {
-        return this->score < t.score;
+        return this->score > t.score;
     }
 };
 
@@ -27,17 +27,17 @@ inline void UpdateScores()
         for (Task &t : task_buffer)
         {
             //resize
-            t.task_values.resize(values.size());
+            t.task_values.resize(values.size()); //so that newly added values dont throw with old tasks
 
             //sum each
             if (!t.state)
             {
                 for (int i = 0; i < values.size(); ++i)
                 {
-                    sum += t.task_values[i] * values[i].weight; //assigned enum * weight
+                    sum += enumFloats[t.task_values[i]] * values[i].weight; //assigned enum * weight
                 }
                 t.score = sum;
-                total_sum += sum;
+                total_sum += sum; //for softmax
             }
         }
 
