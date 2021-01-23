@@ -29,13 +29,16 @@ inline void UpdateScores()
             //resize
             t.task_values.resize(values.size());
 
-            //sum each (if !state)
-            for (int i = 0; i < values.size(); ++i)
+            //sum each
+            if (!t.state)
             {
-                sum += t.task_values[i] * values[i].weight; //assigned enum * weight
+                for (int i = 0; i < values.size(); ++i)
+                {
+                    sum += t.task_values[i] * values[i].weight; //assigned enum * weight
+                }
+                t.score = sum;
+                total_sum += sum;
             }
-            t.score = sum;
-            total_sum += sum;
         }
 
         //sort
