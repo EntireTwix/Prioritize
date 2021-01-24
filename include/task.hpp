@@ -75,7 +75,7 @@ struct Task
             {
                 val_temp[j] = temp[i]["task_value"][j].asInt();
             }
-            tb[i] = {temp[i]["name"].asString(), temp[i]["score"].asFloat(), temp[i]["state"].asBool(), val_temp};
+            tb[i] = {temp[i]["name"].asString(), temp[i]["score"].asFloat(), temp[i]["state"].asBool(), val_temp, 0};
         }
         return true;
     }

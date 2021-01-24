@@ -27,8 +27,6 @@ static bool task_active = false;
 
 void my_display_code()
 {
-    UpdateScores();
-
     //dashboard
     ImGui::Begin("##Dashboard", nullptr, window_flags);
     if (ImGui::BeginMenuBar())
@@ -65,6 +63,7 @@ void my_display_code()
     {
         ImGui::TableSetupColumn("Name", ImGuiTableColumnFlags_WidthStretch);
         ImGui::TableSetupColumn("Score", ImGuiTableColumnFlags_WidthFixed);
+        UpdateScores();
         for (Task &t : task_buffer)
         {
             ImGui::TableNextRow();
@@ -150,6 +149,14 @@ void my_display_code()
                                              "VeryHigh",
                                              "ExtremelyHigh"};
         ImGui::Begin("Editing Tasks", &task_active, default_flags);
+        static char temp[128] = "";
+        ImGui::InputTextWithHint("##task_name", "enter task name", temp, IM_ARRAYSIZE(temp));
+        ImGui::SameLine();
+        if (ImGui::Button("Add"))
+        {
+            task_buffer.push_back({temp});
+            change_flag = true;
+        }
         if (ImGui::BeginTable("##table1", 1 + values.size(), table_settings))
         {
             ImGui::TableSetupColumn("Name", ImGuiTableColumnFlags_WidthStretch);
@@ -158,6 +165,7 @@ void my_display_code()
                 ImGui::TableSetupColumn(v.name.c_str(), ImGuiTableColumnFlags_WidthFixed, 150);
             }
             ImGui::TableHeadersRow();
+            UpdateScores();
             for (Task &t : task_buffer)
             {
                 ImGui::TableNextRow();
@@ -223,11 +231,9 @@ void glut_display_func()
 
 int main(int argc, char **argv)
 {
-    values.push_back({"Effort", 0.9});
-    values.push_back({"Time", 1.5});
-    task_buffer.push_back({"A", 0, 0, {VirtuallyNone, Medium}});
-    task_buffer.push_back({"B", 0, 0, {ExtremelyHigh, Low}});
-    task_buffer.push_back({"C", 0, 0, {VeryLow, High}});
+    values.push_back({"Urgency", 1});
+    values.push_back({"Time", 1});
+    values.push_back({"Points", 1});
 
     // Create GLUT window
     glutInit(&argc, argv);
