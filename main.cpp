@@ -20,6 +20,10 @@ static bool show_demo_window = true;
 static const ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
 static const ImGuiWindowFlags window_flags = ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_MenuBar | ImGuiWindowFlags_NoTitleBar;
 static const ImGuiTableFlags table_settings = ImGuiTableFlags_BordersInnerV | ImGuiTableFlags_BordersOuterV | ImGuiTableFlags_BordersInnerV | ImGuiTableFlags_BordersOuterH;
+static const ImGuiWindowFlags save_flags = ImGuiWindowFlags_NoCollapse;
+static bool save_active = false;
+static char save_locationbff[128] = "";
+static std::string save_location;
 
 void my_display_code()
 {
@@ -33,6 +37,7 @@ void my_display_code()
             }
             if (ImGui::MenuItem("Save", "Ctrl+S"))
             {
+                save_active = true;
             }
             ImGui::EndMenu();
         }
@@ -68,7 +73,7 @@ void my_display_code()
             ImGui::TableSetColumnIndex(1);
             if (!t.state)
             {
-                ImGui::TextColored(ImVec4(t.score, 1 - t.score, 0.0f, 1.0f), "%d%%", (int)(t.score * 100));
+                ImGui::TextColored(ImVec4(t.score, (1 - t.score), 0.0f, 1.0f), "%d%%", (int)(t.score * 100));
             }
             else
             {
@@ -78,6 +83,29 @@ void my_display_code()
         ImGui::EndTable();
     }
     ImGui::End();
+    if (save_active)
+    {
+        static bool error_flag = false;
+        ImGui::Begin("Save Window", &save_active, save_flags);
+        ImGui::InputTextWithHint("folder path", "ex: \"homework/\"", save_locationbff, IM_ARRAYSIZE(save_locationbff));
+        if (ImGui::Button("Save"))
+        {
+            save_location = save_locationbff;
+            if (Task::Save(save_location, task_buffer))
+            {
+                save_active = false;
+            }
+            else
+            {
+                error_flag = true;
+            }
+        }
+        if (error_flag)
+        {
+            ImGui::TextColored(ImVec4(1.0f, 0.0f, 0.0f, 1.0f), "cannot find directory");
+        }
+        ImGui::End();
+    }
 
     if (show_demo_window)
         ImGui::ShowDemoWindow(&show_demo_window);
@@ -172,18 +200,5 @@ int main(int argc, char **argv)
 
     return 0;
 }
-
-//change bool
-
 //0->2 float slider property weight;
 //0->25 int slider per value;
-
-//if change
-//input
-//apply values per property
-//softmax
-//sort
-//display
-
-//*possible parallel hashmap lib use?
-//wont close?
