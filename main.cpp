@@ -22,11 +22,11 @@ static const ImGuiWindowFlags window_flags = ImGuiWindowFlags_NoCollapse | ImGui
 static const ImGuiTableFlags table_settings = ImGuiTableFlags_BordersInnerV | ImGuiTableFlags_BordersOuterV | ImGuiTableFlags_BordersInnerV | ImGuiTableFlags_BordersOuterH;
 static const ImGuiWindowFlags save_flags = ImGuiWindowFlags_NoCollapse;
 static bool save_active = false;
-static char save_locationbff[128] = "";
-static std::string save_location;
+static bool open_active = false;
 
 void my_display_code()
 {
+    //dashboard
     ImGui::Begin("Dashboard", nullptr, window_flags);
     if (ImGui::BeginMenuBar())
     {
@@ -34,6 +34,7 @@ void my_display_code()
         {
             if (ImGui::MenuItem("Open", "Ctrl+O"))
             {
+                open_active = true;
             }
             if (ImGui::MenuItem("Save", "Ctrl+S"))
             {
@@ -83,15 +84,18 @@ void my_display_code()
         ImGui::EndTable();
     }
     ImGui::End();
+
+    //saving
     if (save_active)
     {
+        static char save_locationbff[128] = "";
         static bool error_flag = false;
+
         ImGui::Begin("Save Window", &save_active, save_flags);
-        ImGui::InputTextWithHint("folder path", "ex: \"homework/\"", save_locationbff, IM_ARRAYSIZE(save_locationbff));
+        ImGui::InputTextWithHint("folder path", "ex: \"homework\"", save_locationbff, IM_ARRAYSIZE(save_locationbff));
         if (ImGui::Button("Save"))
         {
-            save_location = save_locationbff;
-            if (Task::Save(save_location, task_buffer))
+            if (Task::Save(save_locationbff, task_buffer))
             {
                 save_active = false;
             }
@@ -107,6 +111,33 @@ void my_display_code()
         ImGui::End();
     }
 
+    //opening
+    if (open_active)
+    {
+        static char open_locationbff[128] = "";
+        static bool error_flag = false;
+
+        ImGui::Begin("Open Window", &open_active, save_flags); //reuses flags
+        ImGui::InputTextWithHint("folder path", "ex: \"homework\"", open_locationbff, IM_ARRAYSIZE(open_locationbff));
+        if (ImGui::Button("Open"))
+        {
+            if (Task::Open(open_locationbff, task_buffer))
+            {
+                open_active = false;
+            }
+            else
+            {
+                error_flag = true;
+            }
+        }
+        if (error_flag)
+        {
+            ImGui::TextColored(ImVec4(1.0f, 0.0f, 0.0f, 1.0f), "cannot find directory");
+        }
+        ImGui::End();
+    }
+
+    //temp
     if (show_demo_window)
         ImGui::ShowDemoWindow(&show_demo_window);
 }

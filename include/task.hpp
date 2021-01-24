@@ -36,7 +36,7 @@ struct Task
     {
         Json::StreamWriterBuilder builder;
         const std::unique_ptr<Json::StreamWriter> writer(builder.newStreamWriter());
-        std::ofstream tasks(location + "tasks.json");
+        std::ofstream tasks(location + "/tasks.json");
         if (tasks.is_open())
         {
             Json::Value res;
@@ -53,6 +53,31 @@ struct Task
             tasks.close();
             return false;
         }
+    }
+    static bool Open(const std::string &location, std::vector<Task> &tb)
+    {
+        Json::CharReaderBuilder builder;
+        Json::Value temp;
+        std::ifstream task_save(location + "/tasks.json");
+        builder["collectComments"] = true;
+        JSONCPP_STRING errs;
+        if (!parseFromStream(builder, task_save, &temp, &errs))
+        {
+            task_save.close();
+            return false;
+        }
+        task_save.close();
+        tb.resize(temp.size());
+        std::vector<int> val_temp(values.size());
+        for (int i = 0; i < temp.size(); ++i)
+        {
+            for (int j = 0; j < values.size(); ++j)
+            {
+                val_temp[j] = temp[i]["task_value"][j].asInt();
+            }
+            tb[i] = {temp[i]["name"].asString(), temp[i]["score"].asFloat(), temp[i]["state"].asBool(), val_temp};
+        }
+        return true;
     }
 };
 
