@@ -19,24 +19,27 @@ static bool show_demo_window = true;
 
 static const ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
 static const ImGuiWindowFlags window_flags = ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_MenuBar | ImGuiWindowFlags_NoTitleBar;
-static const ImGuiTableFlags table_settings = ImGuiTableFlags_BordersInnerV | ImGuiTableFlags_BordersOuterV | ImGuiTableFlags_BordersInnerV | ImGuiTableFlags_BordersOuterH;
-static const ImGuiWindowFlags save_flags = ImGuiWindowFlags_NoCollapse;
+static const ImGuiWindowFlags default_flags = ImGuiWindowFlags_NoCollapse;
+static const ImGuiTableFlags table_settings = ImGuiTableFlags_BordersInnerH | ImGuiTableFlags_BordersInnerV | ImGuiTableFlags_BordersOuterV | ImGuiTableFlags_BordersInnerV | ImGuiTableFlags_BordersOuterH;
 static bool save_active = false;
 static bool open_active = false;
+static bool task_active = false;
 
 void my_display_code()
 {
+    UpdateScores();
+
     //dashboard
-    ImGui::Begin("Dashboard", nullptr, window_flags);
+    ImGui::Begin("##Dashboard", nullptr, window_flags);
     if (ImGui::BeginMenuBar())
     {
         if (ImGui::BeginMenu("File"))
         {
-            if (ImGui::MenuItem("Open", "Ctrl+O"))
+            if (ImGui::MenuItem("Open"))
             {
                 open_active = true;
             }
-            if (ImGui::MenuItem("Save", "Ctrl+S"))
+            if (ImGui::MenuItem("Save"))
             {
                 save_active = true;
             }
@@ -46,6 +49,7 @@ void my_display_code()
         {
             if (ImGui::MenuItem("Tasks"))
             {
+                task_active = true;
             }
             if (ImGui::MenuItem("Values"))
             {
@@ -61,8 +65,6 @@ void my_display_code()
     {
         ImGui::TableSetupColumn("Name", ImGuiTableColumnFlags_WidthStretch);
         ImGui::TableSetupColumn("Score", ImGuiTableColumnFlags_WidthFixed);
-        // ImGui::TableHeadersRow();
-        UpdateScores();
         for (Task &t : task_buffer)
         {
             ImGui::TableNextRow();
@@ -91,7 +93,7 @@ void my_display_code()
         static char save_locationbff[128] = "";
         static bool error_flag = false;
 
-        ImGui::Begin("Save Window", &save_active, save_flags);
+        ImGui::Begin("Save Window", &save_active, default_flags);
         ImGui::InputTextWithHint("folder path", "ex: \"homework\"", save_locationbff, IM_ARRAYSIZE(save_locationbff));
         if (ImGui::Button("Save"))
         {
@@ -117,7 +119,7 @@ void my_display_code()
         static char open_locationbff[128] = "";
         static bool error_flag = false;
 
-        ImGui::Begin("Open Window", &open_active, save_flags); //reuses flags
+        ImGui::Begin("Open Window", &open_active, default_flags); //reuses flags
         ImGui::InputTextWithHint("folder path", "ex: \"homework\"", open_locationbff, IM_ARRAYSIZE(open_locationbff));
         if (ImGui::Button("Open"))
         {
@@ -133,6 +135,56 @@ void my_display_code()
         if (error_flag)
         {
             ImGui::TextColored(ImVec4(1.0f, 0.0f, 0.0f, 1.0f), "cannot find directory");
+        }
+        ImGui::End();
+    }
+
+    //edit task
+    if (task_active)
+    {
+        static const char *elems_names[7] = {"VirtuallyNone",
+                                             "VeryLow",
+                                             "Low",
+                                             "Medium",
+                                             "High",
+                                             "VeryHigh",
+                                             "ExtremelyHigh"};
+        ImGui::Begin("Editing Tasks", &task_active, default_flags);
+        if (ImGui::BeginTable("##table1", 1 + values.size(), table_settings))
+        {
+            ImGui::TableSetupColumn("Name", ImGuiTableColumnFlags_WidthStretch);
+            for (const Value &v : values)
+            {
+                ImGui::TableSetupColumn(v.name.c_str(), ImGuiTableColumnFlags_WidthFixed, 150);
+            }
+            ImGui::TableHeadersRow();
+            for (Task &t : task_buffer)
+            {
+                ImGui::TableNextRow();
+                ImGui::TableSetColumnIndex(0);
+                ImGui::Checkbox(t.name.c_str(), &t.select);
+                for (int i = 0; i < values.size(); ++i)
+                {
+                    ImGui::TableSetColumnIndex(i + 1);
+                    ImGui::SliderInt((std::string("##") + std::to_string(i) + ':' + t.name).c_str(), &t.task_values[i], 0, 6, elems_names[t.task_values[i]]);
+                }
+            }
+            ImGui::EndTable();
+        }
+        if (ImGui::Button("Update"))
+        {
+            change_flag = true;
+        }
+        ImGui::SameLine();
+        if (ImGui::Button("Delete Selected"))
+        {
+            for (int i = 0; i < task_buffer.size(); ++i)
+            {
+                if (task_buffer[i].select)
+                {
+                    task_buffer.erase(task_buffer.begin() + i);
+                }
+            }
         }
         ImGui::End();
     }
@@ -173,7 +225,7 @@ int main(int argc, char **argv)
 {
     values.push_back({"Effort", 0.9});
     values.push_back({"Time", 1.5});
-    task_buffer.push_back({"A", 0, 0, {PracticallyNone, Medium}});
+    task_buffer.push_back({"A", 0, 0, {VirtuallyNone, Medium}});
     task_buffer.push_back({"B", 0, 0, {ExtremelyHigh, Low}});
     task_buffer.push_back({"C", 0, 0, {VeryLow, High}});
 

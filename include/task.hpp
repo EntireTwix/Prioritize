@@ -10,9 +10,9 @@ struct Task
     float score = 0;
     bool state;
     std::vector<int> task_values; //x being the value index, the int being the enum
+    bool select;
 
     Task() = default;
-    // Task(const Json::Value &t)
     bool operator<(const Task &t) const
     {
         return this->score > t.score;
