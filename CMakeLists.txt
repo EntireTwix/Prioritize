@@ -11,6 +11,8 @@ add_executable(${PROJECT_NAME} main.cpp)
 target_include_directories(${PROJECT_NAME} PUBLIC include)
 target_include_directories(${PROJECT_NAME} PUBLIC third_party)
 target_include_directories(${PROJECT_NAME} PUBLIC third_party/imgui)
+target_include_directories(${PROJECT_NAME} PUBLIC usr/include)
+
 
 target_sources(${PROJECT_NAME} 
                                PRIVATE third_party/imgui/imgui.cpp 
