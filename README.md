@@ -34,6 +34,16 @@ visually depicted as this graph, making it more steep, flatter, perhaps plateaue
 - seperate your tasks by save folders, and to have different values per grouping, to seperate your work and play for example.
 - a thing to keep in mind with having Urgency as a value or anything time sensitive is that you have to continually update tasks as days elapse atleast in the time relevant category.
 
+## Build
+```
+git clone --recurse-submodules https://github.com/EntireTwix/PrioritizationGUI
+mkdir build
+cd build 
+sudo cmake ..
+sudo make
+sudo ./priority
+```
+
 ## Usage
 
 if you dont know how to build a program executables are supplied in each release.
