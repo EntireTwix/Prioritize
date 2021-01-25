@@ -188,11 +188,14 @@ void my_display_code()
         ImGui::SameLine();
         if (ImGui::Button("Delete Selected"))
         {
-            for (int i = 0; i < task_buffer.size(); ++i)
+            for (int i = task_buffer.size() - 1; i >= 0; --i)
             {
                 if (task_buffer[i].select)
                 {
                     task_buffer.erase(task_buffer.begin() + i);
+                    //std::cout << "erasing " << i << '\n'
+                    //          << "size is now " << task_buffer.size() << '\n';
+                    change_flag = true;
                 }
             }
         }
