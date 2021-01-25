@@ -24,6 +24,7 @@ static const ImGuiTableFlags table_settings = ImGuiTableFlags_BordersInnerH | Im
 static bool save_active = false;
 static bool open_active = false;
 static bool task_active = false;
+static bool val_active = false;
 
 void my_display_code()
 {
@@ -51,6 +52,7 @@ void my_display_code()
             }
             if (ImGui::MenuItem("Values"))
             {
+                val_active = true;
             }
             if (ImGui::MenuItem("Enums"))
             {
@@ -96,7 +98,7 @@ void my_display_code()
         ImGui::InputTextWithHint("folder path", "ex: \"homework\"", save_locationbff, IM_ARRAYSIZE(save_locationbff));
         if (ImGui::Button("Save"))
         {
-            if (Task::Save(save_locationbff, task_buffer))
+            if (Task::Save(save_locationbff, task_buffer) && Value::Save(save_locationbff, values))
             {
                 save_active = false;
             }
@@ -122,7 +124,7 @@ void my_display_code()
         ImGui::InputTextWithHint("folder path", "ex: \"homework\"", open_locationbff, IM_ARRAYSIZE(open_locationbff));
         if (ImGui::Button("Open"))
         {
-            if (Task::Open(open_locationbff, task_buffer))
+            if (Value::Open(open_locationbff, values) && Task::Open(open_locationbff, task_buffer))
             {
                 open_active = false;
             }
@@ -197,6 +199,24 @@ void my_display_code()
         ImGui::End();
     }
 
+    //edit values
+    if (val_active)
+    {
+        ImGui::Begin("Edit Values", &val_active, default_flags);
+
+        static char temp[128] = "";
+        ImGui::InputTextWithHint("##value_name", "enter value name", temp, IM_ARRAYSIZE(temp));
+
+        static float temp_weight = 0;
+        ImGui::SliderFloat("weight", &temp_weight, 0, 2, "%.2f");
+        if (ImGui::Button("Add"))
+        {
+            values.push_back({temp, temp_weight});
+            change_flag = true;
+        }
+        ImGui::End();
+    }
+
     //temp
     if (show_demo_window)
         ImGui::ShowDemoWindow(&show_demo_window);
@@ -231,10 +251,10 @@ void glut_display_func()
 
 int main(int argc, char **argv)
 {
-    values.push_back({"Urgency", 1});
-    values.push_back({"Time", 1});
-    values.push_back({"Points", 1});
 
+    // values.push_back({"Urgency", 1});
+    // values.push_back({"Time", 1});
+    // values.push_back({"Points", 1});
     // Create GLUT window
     glutInit(&argc, argv);
 #ifdef __FREEGLUT_EXT_H__
