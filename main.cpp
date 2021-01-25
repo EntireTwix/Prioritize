@@ -176,7 +176,7 @@ void my_display_code()
                 for (int i = 0; i < values.size(); ++i)
                 {
                     ImGui::TableSetColumnIndex(i + 1);
-                    ImGui::SliderInt((std::string("##") + std::to_string(i) + ':' + t.name).c_str(), &t.task_values[i], 0, 6, elems_names[t.task_values[i]]);
+                    ImGui::SliderInt(("##" + std::to_string(i) + ':' + t.name).c_str(), &t.task_values[i], 0, 6, elems_names[t.task_values[i]]);
                 }
             }
             ImGui::EndTable();
@@ -213,6 +213,32 @@ void my_display_code()
         {
             values.push_back({temp, temp_weight});
             change_flag = true;
+        }
+        ImGui::NewLine();
+
+        for (int i = 0; i < values.size(); ++i)
+        {
+            ImGui::Checkbox(("##" + std::to_string(i)).c_str(), &values[i].select);
+            ImGui::SameLine();
+            if (ImGui::SliderFloat(values[i].name.c_str(), &values[i].weight, 0, 2, "%.2f"))
+            {
+                change_flag = true;
+            }
+        }
+        if (ImGui::Button("Delete Selected"))
+        {
+            for (int i = 0; i < values.size(); ++i)
+            {
+                if (values[i].select)
+                {
+                    values.erase(values.begin() + i);
+                    for (Task &t : task_buffer)
+                    {
+                        t.task_values.erase(t.task_values.begin() + i); //removing refs
+                    }
+                    change_flag = true;
+                }
+            }
         }
         ImGui::End();
     }

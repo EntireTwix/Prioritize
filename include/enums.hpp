@@ -7,6 +7,7 @@ struct Value
 {
     std::string name;
     float weight = 1;
+    bool select;
 
     Json::Value Serialize() const
     {
