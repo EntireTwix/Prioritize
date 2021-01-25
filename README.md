@@ -1,6 +1,6 @@
 # PrioritizationGUI (2/3 complete)
 
-[full example](https://github.com/EntireTwix/PrioritizationGUI/blob/main/primary_image.png)
+![full example](https://github.com/EntireTwix/PrioritizationGUI/blob/main/primary_image.png)
 
 just a quick test program as I mess around with imgui, although thats not to say this program lacks utility for simple task prioritization.
 
