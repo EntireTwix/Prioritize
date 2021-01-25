@@ -62,7 +62,7 @@ struct Value
 };
 
 static std::vector<Value> values;
-static std::vector<float> enumFloats{0, 1, 2, 4, 8, 16, 32};
+static std::vector<float> enumFloats{0, 7.5, 18.5, 33, 60, 90, 140};
 
 //for gui usage
 enum ValEnum
