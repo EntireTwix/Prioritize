@@ -35,10 +35,17 @@ visually depicted as this graph, making it more steep, flatter, perhaps plateaue
 - a thing to keep in mind with having Urgency as a value or anything time sensitive is that you have to continually update tasks as days elapse atleast in the time relevant category.
 
 ## Build
+
+if you dont already have jsoncpp
+
+```
+sudo apt install libjsoncpp-dev
+```
+
 ```
 git clone --recurse-submodules https://github.com/EntireTwix/PrioritizationGUI
 mkdir build
-cd build 
+cd build
 sudo cmake ..
 sudo make
 sudo ./priority
