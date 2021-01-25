@@ -1,19 +1,21 @@
 # PrioritizationGUI (2/3 complete)
+
+[primary example image]
+
 just a quick test program as I mess around with imgui, although thats not to say this program lacks utility for simple task prioritization.
 
 This program is targetted towards those who want to prioritize there academic or recreational lifes.
-The way it works is there are a set of values with differing weights that are to apply to each task
+The way it works is there are a set of values with differing weights that are to apply to each task, this is found in `Edit->Values`
 
 [image of edit values]
 
-an overall score is assigned using these values for each task and given a priority percentage comparative to the rest of 
+an overall score is assigned using these values for each task and given a priority percentage comparative to the rest of
 the assignments.
 
 [image of dashboard]
 
+You can edit the Tasks and there enumerations for each value on the `Edit->Tasks` page.
 
-You can edit the Tasks and there enumerations for each value on the Edit->Tasks page.
- 
 [image of edit tasks]
 
 when a task is completed the user can check the checkbox which will instantly update the rankings.
@@ -27,4 +29,5 @@ visually depicted as this graph, making it more steep, flatter, perhaps plateaue
 [image of plot]
 
 # Usage
+
 if you dont know how to build a program binaries (executables) are supplied in each release.
