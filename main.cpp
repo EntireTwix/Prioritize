@@ -14,7 +14,7 @@
 #pragma warning(disable : 4505) // unreferenced local function has been removed
 #endif
 
-// static bool show_demo_window = true;
+//static bool show_demo_window = true;
 
 static const ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
 static const ImGuiWindowFlags window_flags = ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_MenuBar | ImGuiWindowFlags_NoTitleBar;
@@ -158,6 +158,7 @@ void my_display_code()
             task_buffer.push_back({temp});
             change_flag = true;
         }
+
         if (ImGui::BeginTable("##table1", 1 + values.size(), table_settings))
         {
             ImGui::TableSetupColumn("Name", ImGuiTableColumnFlags_WidthStretch);
@@ -176,6 +177,8 @@ void my_display_code()
                 {
                     ImGui::TableSetColumnIndex(i + 1);
                     ImGui::SliderInt(("##" + std::to_string(i) + ':' + t.name).c_str(), &t.task_values[i], 0, 6, elems_names[t.task_values[i]]);
+                    ImGui::SameLine();
+                    ImGui::ColorButton(("##" + std::to_string(i) + ':' + t.name).c_str(), ImVec4((float)(enumFloats[t.task_values[i]] / 140), 1 - (float)(enumFloats[t.task_values[i]] / 140), 0.0f, 1.0f), 0, ImVec2(25, 25));
                 }
             }
             ImGui::EndTable();
@@ -245,7 +248,6 @@ void my_display_code()
         ImGui::End();
     }
 
-    //temp
     // if (show_demo_window)
     //     ImGui::ShowDemoWindow(&show_demo_window);
 }

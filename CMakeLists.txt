@@ -22,4 +22,4 @@ target_sources(${PROJECT_NAME}
                                PRIVATE third_party/imgui/imgui_demo.cpp
                                PRIVATE third_party/imgui/backends/imgui_impl_glut.cpp
                                PRIVATE third_party/imgui/backends/imgui_impl_opengl2.cpp
-              )
+                ) 
