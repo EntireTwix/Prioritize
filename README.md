@@ -74,9 +74,9 @@ git clone --recurse-submodules https://github.com/EntireTwix/PrioritizationGUI
 cd PrioritizationGUI
 mkdir build
 cd build
-sudo cmake ..
-sudo make
-sudo ./priority
+cmake ..
+make
+./priority
 ```
 
 ## Usage
