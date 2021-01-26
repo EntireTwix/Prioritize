@@ -49,7 +49,12 @@ visually depicted as this graph, making it more steep, flatter, perhaps plateaue
 
 ## Build
 
-install opengl if u dont have it already installed
+if you dont already have OpenGL
+
+```
+sudo apt-get install libglu1-mesa-dev freeglut3-dev mesa-common-dev
+```
+
 if you dont already have jsoncpp
 
 ```
