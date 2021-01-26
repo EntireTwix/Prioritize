@@ -43,7 +43,7 @@ visually depicted as this graph, making it more steep, flatter, perhaps plateaue
 
 ## Tips
 
-- if you notice a task is ranked higher then another task and your intuition tells you its priority is incorrect then notice what about it is overrated and adjust the value accordingly, doing so overtime will ideally fine tune your values to your preference. For example, in the example images my urgency value is at 50% because its quarentine and my teachers dont care about my stuff being late.
+- if you notice a task is ranked higher then another task and your intuition tells you its priority is incorrect then notice what about it is overrated and adjust the value accordingly, doing so overtime will ideally fine tune your values to your preference. For example, in the example imagine my urgency value is at 50% because its quarentine and my teachers dont care about my stuff being late.
 - seperate your tasks by save folders, and to have different values per grouping, to seperate your work and play for example.
 - a thing to keep in mind with having a time sensitive value such as Urgency seen in the examples is that to keep the priority accurate you must upkeep its enumaration by continually updating each task when a significant time has elapsed
 
@@ -66,6 +66,7 @@ after that do
 
 ```
 git clone --recurse-submodules https://github.com/EntireTwix/PrioritizationGUI
+cd PrioritizationGUI
 mkdir build
 cd build
 sudo cmake ..
