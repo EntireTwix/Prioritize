@@ -158,7 +158,6 @@ void my_display_code()
             task_buffer.push_back({temp});
             change_flag = true;
         }
-
         if (ImGui::BeginTable("##table1", 1 + values.size(), table_settings))
         {
             ImGui::TableSetupColumn("Name", ImGuiTableColumnFlags_WidthStretch);
@@ -178,7 +177,7 @@ void my_display_code()
                     ImGui::TableSetColumnIndex(i + 1);
                     ImGui::SliderInt(("##" + std::to_string(i) + ':' + t.name).c_str(), &t.task_values[i], 0, 6, elems_names[t.task_values[i]]);
                     ImGui::SameLine();
-                    ImGui::ColorButton(("##" + std::to_string(i) + ':' + t.name).c_str(), ImVec4((float)(enumFloats[t.task_values[i]] / 140), 1 - (float)(enumFloats[t.task_values[i]] / 140), 0.0f, 1.0f), 0, ImVec2(25, 25));
+                    ImGui::ColorButton(("##" + std::to_string(i) + ':' + t.name).c_str(), ImVec4((float)(enumFloats[t.task_values[i]] / 140) * 2.8, 1 - (float)(enumFloats[t.task_values[i]] / 140) * 1.2, 0.0f, 1.0f), 0, ImVec2(35, 25));
                 }
             }
             ImGui::EndTable();
