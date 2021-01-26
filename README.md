@@ -36,11 +36,20 @@ visually depicted as this graph, making it more steep, flatter, perhaps plateaue
 
 ## Build
 
+install opengl if u dont have it already installed
 if you dont already have jsoncpp
 
 ```
 sudo apt install libjsoncpp-dev
 ```
+
+additionally if on debain do (so the headers can be found)
+
+```
+sudo ln -s /usr/include/jsoncpp/json/ /usr/include/json
+```
+
+after all that do
 
 ```
 git clone --recurse-submodules https://github.com/EntireTwix/PrioritizationGUI

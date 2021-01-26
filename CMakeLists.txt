@@ -1,12 +1,12 @@
-cmake_minimum_required(VERSION 3.16)
 set (CMAKE_CXX_STANDARD 17)
-if(NOT CMAKE_BUILD_TYPE)
-  set(CMAKE_BUILD_TYPE Release)
-  set(CMAKE_CXX_FLAGS_RELEASE "-O3")
-  set(CMAKE_CXX_FLAGS_RELEASE "-lglut -lGL -lGLU -ljsoncpp")
-endif()
+set(CMAKE_BUILD_TYPE Release)
+set(CMAKE_CXX_FLAGS_RELEASE "-O3")
 project(priority)
 add_executable(${PROJECT_NAME} main.cpp)
+
+set(LIBS glut GL GLU jsoncpp)
+target_link_libraries(${PROJECT_NAME} ${LIBS})
+
 
 target_include_directories(${PROJECT_NAME} PUBLIC include)
 target_include_directories(${PROJECT_NAME} PUBLIC third_party)
