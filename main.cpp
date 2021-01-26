@@ -14,8 +14,7 @@
 #pragma warning(disable : 4505) // unreferenced local function has been removed
 #endif
 
-//temp
-static bool show_demo_window = true;
+// static bool show_demo_window = true;
 
 static const ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
 static const ImGuiWindowFlags window_flags = ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_MenuBar | ImGuiWindowFlags_NoTitleBar;
@@ -247,8 +246,8 @@ void my_display_code()
     }
 
     //temp
-    if (show_demo_window)
-        ImGui::ShowDemoWindow(&show_demo_window);
+    // if (show_demo_window)
+    //     ImGui::ShowDemoWindow(&show_demo_window);
 }
 
 void glut_display_func()
