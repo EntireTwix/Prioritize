@@ -5,7 +5,7 @@ set(CMAKE_CXX_FLAGS_RELEASE "-O3")
 project(priority)
 add_executable(${PROJECT_NAME} main.cpp)
 
-set(LIBS glut GL GLU jsoncpp)
+set(LIBS glut GL GLU)
 target_link_libraries(${PROJECT_NAME} ${LIBS})
 
 

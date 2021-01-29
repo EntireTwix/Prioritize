@@ -38,6 +38,7 @@ bool Load(const std::string &location, std::vector<T> &dest)
     std::string final_str, temp_str;
     if (input.is_open())
     {
+        //entirely for old versions that werent one line
         while (input >> temp_str)
         {
             final_str += temp_str;
