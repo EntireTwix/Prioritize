@@ -67,6 +67,6 @@ make
 ./priority
 ```
 
-## Usage
+## Binaries
 
 if you dont know how to build a program executables are supplied in each release.

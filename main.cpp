@@ -8,7 +8,7 @@
 #ifdef __APPLE__
 #include <GLUT/glut.h>
 #elif defined(WIN32) || defined(_WIN32) || defined(__WIN32__) || defined(__NT__)
-#include <GL/gl.h>
+#include <GL/freeglut.h>
 #elif __linux__
 #include <GL/freeglut.h>
 #else
