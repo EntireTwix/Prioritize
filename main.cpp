@@ -223,17 +223,19 @@ void my_display_code()
             }
             ImGui::TableHeadersRow();
             UpdateScores();
-            for (Task &t : task_buffer)
+            for (size_t j = 0; j < task_buffer.size(); ++j)
             {
                 ImGui::TableNextRow();
                 ImGui::TableSetColumnIndex(0);
-                ImGui::Checkbox(t.name.c_str(), &t.select);
+                ImGui::Checkbox(("##" + task_buffer[j].name).c_str(), &task_buffer[j].select);
+                ImGui::SameLine();
+                ImGui::InputText(("##name of " + std::to_string(j)).c_str(), task_buffer[j].name.data(), 128);
                 for (int i = 0; i < values.size(); ++i)
                 {
                     ImGui::TableSetColumnIndex(i + 1);
-                    ImGui::SliderInt(("##" + std::to_string(i) + ':' + t.name).c_str(), &t.task_values[i], 0, 6, elems_names[t.task_values[i]]);
+                    ImGui::SliderInt(("##" + std::to_string(i) + ':' + std::to_string(j)).c_str(), &task_buffer[j].task_values[i], 0, 6, elems_names[task_buffer[j].task_values[i]]);
                     ImGui::SameLine();
-                    ImGui::ColorButton(("##" + std::to_string(i) + ':' + t.name).c_str(), ImVec4((float)(enumFloats[t.task_values[i]] / 140) * 2.5, 1 - (float)(enumFloats[t.task_values[i]] / 140), 0.0f, 1.0f), 0, ImVec2(35, 25));
+                    ImGui::ColorButton(("##" + std::to_string(i) + ':' + std::to_string(j)).c_str(), ImVec4((float)(enumFloats[task_buffer[j].task_values[i]] / 140) * 2.5, 1 - (float)(enumFloats[task_buffer[j].task_values[i]] / 140), 0.0f, 1.0f), 0, ImVec2(35, 25));
                 }
             }
             ImGui::EndTable();
