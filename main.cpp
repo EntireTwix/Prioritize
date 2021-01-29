@@ -64,7 +64,7 @@ bool Load(const std::string &location, std::vector<T> &dest)
     return true;
 }
 
-static bool show_demo_window = true;
+//static bool show_demo_window = true;
 
 static const ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
 static constexpr ImGuiWindowFlags window_flags = ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_MenuBar | ImGuiWindowFlags_NoTitleBar;
@@ -316,14 +316,17 @@ void my_display_code()
         ImGui::PlotLines("Enums Ploted", enumFloats.data(), enumFloats.size());
         for (int i = 0; i < IM_ARRAYSIZE(elems_names); ++i)
         {
-            ImGui::VSliderFloat((std::string("##") + std::to_string(i)).c_str(), ImVec2(21, 256), &enumFloats[i], 0, 256);
+            if (ImGui::VSliderFloat((std::string("##") + std::to_string(i)).c_str(), ImVec2(21, 256), &enumFloats[i], 0, 256))
+            {
+                change_flag = true;
+            }
             ImGui::SameLine();
         }
         ImGui::End();
     }
 
-    if (show_demo_window)
-        ImGui::ShowDemoWindow(&show_demo_window);
+    // if (show_demo_window)
+    //     ImGui::ShowDemoWindow(&show_demo_window);
 }
 
 void glut_display_func()
