@@ -156,7 +156,7 @@ void my_display_code()
         ImGui::InputTextWithHint("folder path", "ex: \"homework\"", save_locationbff, IM_ARRAYSIZE(save_locationbff));
         if (ImGui::Button("Save"))
         {
-            if (Save(std::string(save_locationbff) + "/tasks.json", task_buffer), Save(std::string(save_locationbff) + "/values.json", values))
+            if (Save(std::string(save_locationbff) + "/tasks.json", task_buffer) && Save(std::string(save_locationbff) + "/values.json", values) && Save(std::string(save_locationbff) + "/enums.json", enumFloats))
             {
                 save_active = false;
             }
@@ -182,7 +182,7 @@ void my_display_code()
         ImGui::InputTextWithHint("folder path", "ex: \"homework\"", open_locationbff, IM_ARRAYSIZE(open_locationbff));
         if (ImGui::Button("Open"))
         {
-            if (Load(std::string(open_locationbff) + "/values.json", values), Load(std::string(open_locationbff) + "/tasks.json", task_buffer))
+            if (Load(std::string(open_locationbff) + "/values.json", values) && Load(std::string(open_locationbff) + "/tasks.json", task_buffer) && Load(std::string(open_locationbff) + "/enums.json", enumFloats))
             {
                 open_active = false;
             }
@@ -313,8 +313,11 @@ void my_display_code()
     if (enums_active)
     {
         ImGui::Begin("Edit Enums", &enums_active, default_flags);
-        for (int i = 0; i < sizeof(elems_names) / sizeof(elems_names[0]); ++i)
+        ImGui::PlotLines("Enums Ploted", enumFloats.data(), enumFloats.size());
+        for (int i = 0; i < IM_ARRAYSIZE(elems_names); ++i)
         {
+            ImGui::VSliderFloat((std::string("##") + std::to_string(i)).c_str(), ImVec2(21, 256), &enumFloats[i], 0, 256);
+            ImGui::SameLine();
         }
         ImGui::End();
     }
