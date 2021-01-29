@@ -185,6 +185,7 @@ void my_display_code()
             if (Load(std::string(open_locationbff) + "/values.json", values) && Load(std::string(open_locationbff) + "/tasks.json", task_buffer) && Load(std::string(open_locationbff) + "/enums.json", enumFloats))
             {
                 open_active = false;
+                change_flag = true;
             }
             else
             {

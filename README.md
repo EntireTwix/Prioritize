@@ -34,12 +34,15 @@ You can edit the Tasks and their enumerations for each value on the `Edit->Tasks
 
 to save/load use `File->Open` and `File->Close` respectively, you will be prompted with the option to enter in a folder path, this folder path must exist beforehand
 
-### Enums (incomplete)
+### Enums
 
-lastly for those of you who really like customization you can also modify the enumerations float value,
+lastly for those of you who really like customization you can also modify the enumerations float value.
+For example Low, Medium, High
 visually depicted as this graph, making it more steep, flatter, perhaps plateaued in the center, exeggerate the end, etc
 
-![image of plot]
+![image of plot](https://github.com/EntireTwix/PrioritizationGUI/blob/main/editing_enums.png)
+
+I do not recommend most users mess with the enums
 
 ## Tips
 

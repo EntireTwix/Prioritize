@@ -72,7 +72,10 @@ inline void UpdateScores()
         //softmax
         for (Task &t : task_buffer)
         {
-            t.score /= total_sum;
+            if (t.score)
+            {
+                t.score /= total_sum;
+            }
         }
 
         //back to no change
