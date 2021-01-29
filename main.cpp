@@ -13,7 +13,6 @@
 #ifdef _MSC_VER
 #pragma warning(disable : 4505) // unreferenced local function has been removed
 #endif
-#include <iostream>
 
 template <typename T>
 bool Save(const std::string &location, const std::vector<T> &dest)
@@ -36,11 +35,14 @@ bool Load(const std::string &location, std::vector<T> &dest)
 {
     std::ifstream input(location);
     json temp;
-    std::string temp_str;
+    std::string final_str, temp_str;
     if (input.is_open())
     {
-        input >> temp_str;
-        temp = json::parse(temp_str);
+        while (input >> temp_str)
+        {
+            final_str += temp_str;
+        }
+        temp = json::parse(final_str);
         input.close();
     }
     else

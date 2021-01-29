@@ -1,5 +1,5 @@
 #pragma once
-#include <list>
+#include <iostream>
 #include <algorithm>
 #include "enums.hpp"
 
@@ -27,7 +27,6 @@ void from_json(const json &j, Task &t)
     t.name = j["name"];
     t.score = j["score"];
     t.state = j["state"];
-
     auto temp = j["task_value"];
     t.task_values.resize(temp.size());
     for (size_t i = 0; i < temp.size(); ++i)
