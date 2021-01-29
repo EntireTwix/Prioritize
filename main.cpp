@@ -64,7 +64,7 @@ bool Load(const std::string &location, std::vector<T> &dest)
     return true;
 }
 
-//static bool show_demo_window = true;
+static bool show_demo_window = true;
 
 static const ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
 static constexpr ImGuiWindowFlags window_flags = ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_MenuBar | ImGuiWindowFlags_NoTitleBar;
@@ -74,6 +74,14 @@ static bool save_active = false;
 static bool open_active = false;
 static bool task_active = false;
 static bool val_active = false;
+static bool enums_active = false;
+static const char *elems_names[] = {"VirtuallyNone",
+                                    "VeryLow",
+                                    "Low",
+                                    "Medium",
+                                    "High",
+                                    "VeryHigh",
+                                    "ExtremelyHigh"};
 
 void my_display_code()
 {
@@ -105,6 +113,7 @@ void my_display_code()
             }
             if (ImGui::MenuItem("Enums"))
             {
+                enums_active = true;
             }
             ImGui::EndMenu();
         }
@@ -192,13 +201,6 @@ void my_display_code()
     //edit task
     if (task_active)
     {
-        static const char *elems_names[7] = {"VirtuallyNone",
-                                             "VeryLow",
-                                             "Low",
-                                             "Medium",
-                                             "High",
-                                             "VeryHigh",
-                                             "ExtremelyHigh"};
         ImGui::Begin("Editing Tasks", &task_active, default_flags);
         static char temp[128] = "";
         ImGui::InputTextWithHint("##task_name", "enter task name", temp, IM_ARRAYSIZE(temp));
@@ -276,12 +278,19 @@ void my_display_code()
 
         for (int i = 0; i < values.size(); ++i)
         {
+            ImGui::Text(values[i].name.c_str());
             ImGui::Checkbox(("##" + std::to_string(i)).c_str(), &values[i].select);
             ImGui::SameLine();
-            if (ImGui::SliderFloat(values[i].name.c_str(), &values[i].weight, 0, 2, "%.2f"))
+            if (ImGui::SliderFloat(("##S" + values[i].name).c_str(), &values[i].weight, 0, 2, "%.2f"))
             {
                 change_flag = true;
             }
+            ImGui::SameLine();
+            if (ImGui::InputFloat(("##I" + values[i].name).c_str(), &values[i].weight, 0, 2, "%.2f"))
+            {
+                change_flag = true;
+            }
+            ImGui::NewLine();
         }
         if (ImGui::Button("Delete Selected"))
         {
@@ -301,8 +310,17 @@ void my_display_code()
         ImGui::End();
     }
 
-    // if (show_demo_window)
-    //     ImGui::ShowDemoWindow(&show_demo_window);
+    if (enums_active)
+    {
+        ImGui::Begin("Edit Enums", &enums_active, default_flags);
+        for (int i = 0; i < sizeof(elems_names) / sizeof(elems_names[0]); ++i)
+        {
+        }
+        ImGui::End();
+    }
+
+    if (show_demo_window)
+        ImGui::ShowDemoWindow(&show_demo_window);
 }
 
 void glut_display_func()
