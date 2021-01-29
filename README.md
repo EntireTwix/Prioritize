@@ -26,7 +26,7 @@ the assignments.
 
 ### Tasks
 
-You can edit the Tasks and there enumerations for each value on the `Edit->Tasks` page.
+You can edit the Tasks and their enumerations for each value on the `Edit->Tasks` page.
 
 ![image of edit tasks](https://github.com/EntireTwix/PrioritizationGUI/blob/main/editing_task.png)
 
@@ -53,18 +53,6 @@ if you dont already have OpenGL
 
 ```
 sudo apt-get install libglu1-mesa-dev freeglut3-dev mesa-common-dev
-```
-
-if you dont already have jsoncpp
-
-```
-sudo apt install libjsoncpp-dev
-```
-
-additionally if you get build errors that cant find **<json/json.h>** do
-
-```
-sudo ln -s /usr/include/jsoncpp/json/ /usr/include/json
 ```
 
 after that do

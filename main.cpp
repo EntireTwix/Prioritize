@@ -1,4 +1,4 @@
-#include <iostream>
+#include <fstream>
 #include "task.hpp"
 #include "enums.hpp"
 #include "imgui.h"
@@ -13,13 +13,55 @@
 #ifdef _MSC_VER
 #pragma warning(disable : 4505) // unreferenced local function has been removed
 #endif
+#include <iostream>
+
+template <typename T>
+bool Save(const std::string &location, const std::vector<T> &dest)
+{
+    std::ofstream output(location);
+    if (output.is_open())
+    {
+        output << (json(dest).dump());
+    }
+    else
+    {
+        return false;
+    }
+    output.close();
+    return true;
+}
+
+template <typename T>
+bool Load(const std::string &location, std::vector<T> &dest)
+{
+    std::ifstream input(location);
+    json temp;
+    std::string temp_str;
+    if (input.is_open())
+    {
+        input >> temp_str;
+        temp = json::parse(temp_str);
+        input.close();
+    }
+    else
+    {
+        return false;
+    }
+
+    dest.resize(temp.size());
+    for (size_t i = 0; i < temp.size(); ++i)
+    {
+        dest[i] = (T)temp[i];
+    }
+    return true;
+}
 
 //static bool show_demo_window = true;
 
 static const ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
-static const ImGuiWindowFlags window_flags = ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_MenuBar | ImGuiWindowFlags_NoTitleBar;
-static const ImGuiWindowFlags default_flags = ImGuiWindowFlags_NoCollapse;
-static const ImGuiTableFlags table_settings = ImGuiTableFlags_BordersInnerH | ImGuiTableFlags_BordersInnerV | ImGuiTableFlags_BordersOuterV | ImGuiTableFlags_BordersInnerV | ImGuiTableFlags_BordersOuterH;
+static constexpr ImGuiWindowFlags window_flags = ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_MenuBar | ImGuiWindowFlags_NoTitleBar;
+static constexpr ImGuiWindowFlags default_flags = ImGuiWindowFlags_NoCollapse;
+static constexpr ImGuiTableFlags table_settings = ImGuiTableFlags_BordersInnerH | ImGuiTableFlags_BordersInnerV | ImGuiTableFlags_BordersOuterV | ImGuiTableFlags_BordersInnerV | ImGuiTableFlags_BordersOuterH;
 static bool save_active = false;
 static bool open_active = false;
 static bool task_active = false;
@@ -97,7 +139,7 @@ void my_display_code()
         ImGui::InputTextWithHint("folder path", "ex: \"homework\"", save_locationbff, IM_ARRAYSIZE(save_locationbff));
         if (ImGui::Button("Save"))
         {
-            if (Task::Save(save_locationbff, task_buffer) && Value::Save(save_locationbff, values))
+            if (Save(std::string(save_locationbff) + "/tasks.json", task_buffer), Save(std::string(save_locationbff) + "/values.json", values))
             {
                 save_active = false;
             }
@@ -123,7 +165,7 @@ void my_display_code()
         ImGui::InputTextWithHint("folder path", "ex: \"homework\"", open_locationbff, IM_ARRAYSIZE(open_locationbff));
         if (ImGui::Button("Open"))
         {
-            if (Value::Open(open_locationbff, values) && Task::Open(open_locationbff, task_buffer))
+            if (Load(std::string(open_locationbff) + "/values.json", values), Load(std::string(open_locationbff) + "/tasks.json", task_buffer))
             {
                 open_active = false;
             }

@@ -1,3 +1,4 @@
+cmake_minimum_required(VERSION 3.19)
 set (CMAKE_CXX_STANDARD 17)
 set(CMAKE_BUILD_TYPE Release)
 set(CMAKE_CXX_FLAGS_RELEASE "-O3")
@@ -9,10 +10,8 @@ target_link_libraries(${PROJECT_NAME} ${LIBS})
 
 
 target_include_directories(${PROJECT_NAME} PUBLIC include)
-target_include_directories(${PROJECT_NAME} PUBLIC third_party)
 target_include_directories(${PROJECT_NAME} PUBLIC third_party/imgui)
-target_include_directories(${PROJECT_NAME} PUBLIC usr/include)
-
+target_include_directories(${PROJECT_NAME} PUBLIC third_party/json/include)
 
 target_sources(${PROJECT_NAME} 
                                PRIVATE third_party/imgui/imgui.cpp 

@@ -1,6 +1,6 @@
 #pragma once
+#include <list>
 #include <algorithm>
-#include <json/json.h>
 #include "enums.hpp"
 
 struct Task
@@ -16,69 +16,25 @@ struct Task
     {
         return this->score > t.score;
     }
-    Json::Value Serialize() const
-    {
-        Json::Value res;
-        res["name"] = this->name;
-        res["score"] = this->score;
-        res["state"] = this->state;
-
-        Json::Value task_table;
-        for (int i = 0; i < task_values.size(); ++i)
-        {
-            task_table[i] = task_values[i];
-        }
-        res["task_value"] = task_table;
-        return res;
-    }
-    static bool Save(const std::string &location, const std::vector<Task> &tb)
-    {
-        Json::StreamWriterBuilder builder;
-        const std::unique_ptr<Json::StreamWriter> writer(builder.newStreamWriter());
-        std::ofstream tasks(location + "/tasks.json");
-        if (tasks.is_open())
-        {
-            Json::Value res;
-            for (int i = 0; i < tb.size(); ++i)
-            {
-                res[i] = tb[i].Serialize();
-            }
-            writer->write(res, &tasks);
-            tasks.close();
-            return true;
-        }
-        else
-        {
-            tasks.close();
-            return false;
-        }
-    }
-    static bool Open(const std::string &location, std::vector<Task> &tb)
-    {
-        Json::CharReaderBuilder builder;
-        Json::Value temp;
-        std::ifstream task_save(location + "/tasks.json");
-        builder["collectComments"] = true;
-        JSONCPP_STRING errs;
-        if (!parseFromStream(builder, task_save, &temp, &errs))
-        {
-            task_save.close();
-            return false;
-        }
-        task_save.close();
-        tb.resize(temp.size());
-        std::vector<int> val_temp(values.size());
-        for (int i = 0; i < temp.size(); ++i)
-        {
-            for (int j = 0; j < values.size(); ++j)
-            {
-                val_temp[j] = temp[i]["task_value"][j].asInt();
-            }
-            tb[i] = {temp[i]["name"].asString(), temp[i]["score"].asFloat(), temp[i]["state"].asBool(), val_temp};
-        }
-        return true;
-    }
 };
+
+void to_json(json &j, const Task &t)
+{
+    j = json{{"name", t.name}, {"score", t.score}, {"state", t.state}, {"task_value", json(t.task_values)}};
+}
+void from_json(const json &j, Task &t)
+{
+    t.name = j["name"];
+    t.score = j["score"];
+    t.state = j["state"];
+
+    auto temp = j["task_value"];
+    t.task_values.resize(temp.size());
+    for (size_t i = 0; i < temp.size(); ++i)
+    {
+        t.task_values[i] = (int)temp[i];
+    }
+}
 
 static std::vector<Task> task_buffer;
 static bool change_flag = true;
