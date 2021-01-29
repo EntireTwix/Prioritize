@@ -4,10 +4,15 @@
 #include "imgui.h"
 #include "backends/imgui_impl_glut.h"
 #include "backends/imgui_impl_opengl2.h"
+
 #ifdef __APPLE__
 #include <GLUT/glut.h>
-#else
+#elif defined(WIN32) || defined(_WIN32) || defined(__WIN32__) || defined(__NT__)
+#include <GL/gl.h>
+#elif __linux__
 #include <GL/freeglut.h>
+#else
+#error "Unsupported Compiler"
 #endif
 
 #ifdef _MSC_VER
