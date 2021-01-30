@@ -5,7 +5,7 @@
 
 struct Task
 {
-    std::string name = "nil";
+    char name[128] = "nil";
     float score = 0;
     bool state;
     std::vector<int> task_values; //x being the value index, the int being the enum
@@ -24,7 +24,12 @@ void to_json(json &j, const Task &t)
 }
 void from_json(const json &j, Task &t)
 {
-    t.name = j["name"];
+    std::string temp_str = j["name"];
+    temp_str.resize(128);
+    for (uint8_t i = 0; i < temp_str.size(); ++i)
+    {
+        t.name[i] = temp_str[i];
+    }
     t.score = j["score"];
     t.state = j["state"];
     auto temp = j["task_value"];

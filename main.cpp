@@ -128,7 +128,7 @@ void my_display_code()
         {
             ImGui::TableNextRow();
             ImGui::TableSetColumnIndex(0);
-            if (ImGui::Checkbox(t.name.c_str(), &t.state)) //if there is a change
+            if (ImGui::Checkbox(t.name, &t.state)) //if there is a change
             {
                 change_flag = true;
             }
@@ -208,7 +208,12 @@ void my_display_code()
         ImGui::SameLine();
         if (ImGui::Button("Add"))
         {
-            task_buffer.push_back({temp});
+            static Task t;
+            for (uint8_t i = 0; i < 128; ++i)
+            {
+                t.name[i] = temp[i];
+            }
+            task_buffer.push_back({t});
             change_flag = true;
         }
         // static float r, g;
@@ -228,9 +233,9 @@ void my_display_code()
             {
                 ImGui::TableNextRow();
                 ImGui::TableSetColumnIndex(0);
-                ImGui::Checkbox(("##" + task_buffer[j].name).c_str(), &task_buffer[j].select);
+                ImGui::Checkbox((std::string("##") + task_buffer[j].name).c_str(), &task_buffer[j].select);
                 ImGui::SameLine();
-                ImGui::InputText(("##name of " + std::to_string(j)).c_str(), task_buffer[j].name.data(), 128);
+                ImGui::InputText(("##name of " + std::to_string(j)).c_str(), task_buffer[j].name, 128);
                 for (int i = 0; i < values.size(); ++i)
                 {
                     ImGui::TableSetColumnIndex(i + 1);
