@@ -77,7 +77,7 @@ inline void UpdateScores()
         //softmax
         for (Task &t : task_buffer)
         {
-            if (t.score)
+            if (t.score) //preventing -MAX_INT bug
             {
                 t.score /= total_sum;
             }

@@ -6,7 +6,11 @@ set(CMAKE_CXX_FLAGS_RELEASE "-static-libstdc++")
 project(priority)
 add_executable(${PROJECT_NAME} main.cpp)
 
-set(LIBS glut GL GLU)
+if (MSVC)
+    set(LIBS freeglut opengl32)
+else()
+    set(LIBS glut GL GLU)
+endif()
 target_link_libraries(${PROJECT_NAME} ${LIBS})
 
 
