@@ -7,9 +7,9 @@ struct Task
 {
     char name[128] = "nil";
     float score = 0;
-    bool state;
+    bool state = false;
+    bool select = false;
     std::vector<int> task_values; //x being the value index, the int being the enum
-    bool select;
 
     Task() = default;
     bool operator<(const Task &t) const

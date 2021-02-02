@@ -12,8 +12,6 @@ else()
     set(LIBS glut GL GLU)
 endif()
 target_link_libraries(${PROJECT_NAME} ${LIBS})
-
-
 target_include_directories(${PROJECT_NAME} PUBLIC include)
 target_include_directories(${PROJECT_NAME} PUBLIC third_party/imgui)
 target_include_directories(${PROJECT_NAME} PUBLIC third_party/json/include)
