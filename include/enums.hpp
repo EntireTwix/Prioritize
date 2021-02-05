@@ -10,8 +10,8 @@ using namespace nlohmann;
 struct Value
 {
     std::string name;
-    float weight = 1;
-    bool select;
+    float weight;
+    bool select = false;
 };
 
 void to_json(json &j, const Value &v)
