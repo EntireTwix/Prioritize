@@ -27,12 +27,21 @@ void to_json(json &j, const Task &t)
 void from_json(const json &j, Task &t)
 {
     std::string temp_str = j["name"];
-    std::replace(temp_str.begin(), temp_str.end(), '_', ' ');
     if (temp_str.size() > 128)
     {
         temp_str.resize(128);
     }
-    std::move(temp_str.begin(), temp_str.end(), t.name);
+    for (uint8_t i = 0; i < temp_str.size(); ++i)
+    {
+        if (temp_str[i] == '_')
+        {
+            t.name[i] = ' ';
+        }
+        else
+        {
+            t.name[i] = temp_str[i];
+        }
+    }
     t.score = j["score"];
     t.state = j["state"];
     const auto temp = j["task_value"];
