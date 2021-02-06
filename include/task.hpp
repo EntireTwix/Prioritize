@@ -21,30 +21,13 @@ struct Task
 void to_json(json &j, const Task &t)
 {
     std::string temp_str = t.name;
-
-    //jank fix
-    for (char &c : temp_str)
-    {
-        if (c == ' ')
-        {
-            c = '_';
-        }
-    }
-
+    std::replace(temp_str.begin(), temp_str.end(), ' ', '_');
     j = json{{"name", temp_str}, {"score", t.score}, {"state", t.state}, {"task_value", json(t.task_values)}};
 }
 void from_json(const json &j, Task &t)
 {
     std::string temp_str = j["name"];
-
-    //jank fix
-    for (char &c : temp_str)
-    {
-        if (c == '_')
-        {
-            c = ' ';
-        }
-    }
+    std::replace(temp_str.begin(), temp_str.end(), '_', ' ');
     if (temp_str.size() > 128)
     {
         temp_str.resize(128);
