@@ -45,12 +45,11 @@ void from_json(const json &j, Task &t)
             c = ' ';
         }
     }
-
-    temp_str.resize(128);
-    for (uint8_t i = 0; i < temp_str.size(); ++i)
+    if (temp_str.size() > 128)
     {
-        t.name[i] = temp_str[i];
+        temp_str.resize(128);
     }
+    std::move(temp_str.begin(), temp_str.end(), t.name);
     t.score = j["score"];
     t.state = j["state"];
     const auto temp = j["task_value"];
