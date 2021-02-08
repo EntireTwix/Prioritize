@@ -1,4 +1,5 @@
 #include <fstream>
+#include "updates.hpp"
 #include "task.hpp"
 #include "enums.hpp"
 #include "imgui.h"
@@ -18,43 +19,6 @@
 #ifdef _MSC_VER
 #pragma warning(disable : 4505) // unreferenced local function has been removed
 #endif
-
-template <typename T>
-bool Save(const std::string &location, const T &dest)
-{
-    std::ofstream output(location);
-    if (output.is_open())
-    {
-        output << (json(dest).dump());
-    }
-    else
-    {
-        return false;
-    }
-    output.close();
-    return true;
-}
-
-template <typename T>
-bool Load(const std::string &location, T &dest)
-{
-    std::ifstream input(location);
-    json temp;
-    std::string temp_str;
-    if (input.is_open())
-    {
-        input >> temp_str;
-        temp = json::parse(temp_str);
-        input.close();
-    }
-    else
-    {
-        return false;
-    }
-
-    dest = (T)temp;
-    return true;
-}
 
 static const ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
 static constexpr ImGuiWindowFlags window_flags = ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_MenuBar | ImGuiWindowFlags_NoTitleBar;
@@ -317,6 +281,17 @@ void my_display_code()
             }
             ImGui::SameLine();
         }
+        ImGui::End();
+    }
+
+    if (update_active)
+    {
+        ImGui::Begin("Update Available", &update_active, default_flags);
+
+        ImGui::TextColored(ImVec4{0.2, 1.0, 0.2, 1.0}, "There is an update available: %s", current_release.tag_name.c_str());
+        ImGui::Text("Link: '%s'", current_release.html_url.c_str());
+        ImGui::Text("Released by %s at %s", current_release.author.login.c_str(), current_release.published_at.c_str());
+
         ImGui::End();
     }
 }

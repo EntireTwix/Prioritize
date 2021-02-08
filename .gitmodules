@@ -4,3 +4,6 @@
 [submodule "third_party/json"]
 	path = third_party/json
 	url = https://github.com/nlohmann/json
+[submodule "third_party/github_api"]
+	path = third_party/github_api
+	url = https://github.com/Kicer86/github_api
