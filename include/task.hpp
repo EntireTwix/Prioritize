@@ -20,19 +20,31 @@ struct Task
 
 void to_json(json &j, const Task &t)
 {
-    j = json{{"name", t.name}, {"score", t.score}, {"state", t.state}, {"task_value", json(t.task_values)}};
+    std::string temp_str = t.name;
+    std::replace(temp_str.begin(), temp_str.end(), ' ', '_');
+    j = json{{"name", temp_str}, {"score", t.score}, {"state", t.state}, {"task_value", json(t.task_values)}};
 }
 void from_json(const json &j, Task &t)
 {
     std::string temp_str = j["name"];
-    temp_str.resize(128);
+    if (temp_str.size() > 128)
+    {
+        temp_str.resize(128);
+    }
     for (uint8_t i = 0; i < temp_str.size(); ++i)
     {
-        t.name[i] = temp_str[i];
+        if (temp_str[i] == '_')
+        {
+            t.name[i] = ' ';
+        }
+        else
+        {
+            t.name[i] = temp_str[i];
+        }
     }
     t.score = j["score"];
     t.state = j["state"];
-    auto temp = j["task_value"];
+    const auto temp = j["task_value"];
     t.task_values.resize(temp.size());
     for (size_t i = 0; i < temp.size(); ++i)
     {
