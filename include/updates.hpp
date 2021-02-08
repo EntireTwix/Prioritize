@@ -63,7 +63,7 @@ GithubRelease GetCurrent(const std::string &file_path)
     return data;
 }
 
-bool CheckForUpdates()
+void CheckForUpdates()
 {
     GitHub::CurlBackend::Api github;
     GitHub::Request request(github.connect());

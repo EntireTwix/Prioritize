@@ -320,6 +320,7 @@ void glut_display_func()
 
 int main(int argc, char **argv)
 {
+    CheckForUpdates();
     glutInit(&argc, argv);
 #ifdef __FREEGLUT_EXT_H__
     glutSetOption(GLUT_ACTION_ON_WINDOW_CLOSE, GLUT_ACTION_GLUTMAINLOOP_RETURNS);
