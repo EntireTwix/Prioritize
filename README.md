@@ -67,7 +67,7 @@ mkdir build
 cd build
 cmake ..
 make
-./priority
+sudo ./priority
 ```
 
 ## Binaries
