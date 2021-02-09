@@ -272,7 +272,7 @@ void my_display_code()
     if (enums_active)
     {
         ImGui::Begin("Edit Enums", &enums_active, default_flags);
-        ImGui::PlotLines("Enums Ploted", enumFloats.data(), enumFloats.size());
+        ImGui::PlotLines("##Enums Ploted", enumFloats.data(), enumFloats.size());
         for (int i = 0; i < IM_ARRAYSIZE(elems_names); ++i)
         {
             if (ImGui::VSliderFloat((std::string("##") + std::to_string(i)).c_str(), ImVec2(21, 256), &enumFloats[i], 0, 256))
