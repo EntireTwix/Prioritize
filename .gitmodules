@@ -1,9 +1,9 @@
-[submodule "third_party/imgui"]
-	path = third_party/imgui
+[submodule "imgui"]
+	path = src/imgui
 	url = https://github.com/ocornut/imgui
-[submodule "third_party/json"]
-	path = third_party/json
+[submodule "json"]
+	path = src/json
 	url = https://github.com/nlohmann/json
-[submodule "third_party/github_api"]
-	path = third_party/github_api
+[submodule "github_api"]
+	path = src/github_api
 	url = https://github.com/Kicer86/github_api
