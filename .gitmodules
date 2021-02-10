@@ -1,9 +1,9 @@
-[submodule "imgui"]
+[submodule "src/imgui"]
 	path = src/imgui
 	url = https://github.com/ocornut/imgui
-[submodule "json"]
+[submodule "src/json"]
 	path = src/json
 	url = https://github.com/nlohmann/json
-[submodule "github_api"]
+[submodule "src/github_api"]
 	path = src/github_api
 	url = https://github.com/Kicer86/github_api
