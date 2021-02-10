@@ -4,7 +4,6 @@ set (CMAKE_CXX_STANDARD 17)
 
 set(GitHubAPI_CurlBackend ON)
 add_subdirectory(src/github_api)
-add_subdirectory(src/json)
 
 file(GLOB SRC "src/imgui/*.cpp")
 add_executable(${PROJECT_NAME} ${SRC} src/imgui/backends/imgui_impl_opengl2.cpp src/imgui/backends/imgui_impl_glut.cpp main.cpp)
