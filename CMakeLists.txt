@@ -8,12 +8,10 @@ add_subdirectory(src/github_api)
 file(GLOB SRC "src/imgui/*.cpp")
 add_executable(${PROJECT_NAME} ${SRC} src/imgui/backends/imgui_impl_opengl2.cpp src/imgui/backends/imgui_impl_glut.cpp main.cpp)
 
-if (MSVC)
-    target_link_libraries(${PROJECT_NAME} PUBLIC FREEGLUT_LIB_PATH)
-    target_include_directories(${PROJECT_NAME} PUBLIC FREEGLUT_INC_PATH)
-    
-    set(LIBS freeglut opengl32 github_api)
-else()
+if (MSVC)	
+    include_directories(${FREEGLUT_INCLUDE_DIRS})
+    set(LIBS ${FREEGLUT_LIBRARY} opengl32 github_api)
+else() 
     set(LIBS glut GL GLU github_api)
 endif()
 
