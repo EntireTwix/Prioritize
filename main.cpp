@@ -163,10 +163,7 @@ void my_display_code()
         if (ImGui::Button("Add"))
         {
             static Task t;
-            for (uint8_t i = 0; i < 128; ++i)
-            {
-                t.name[i] = temp[i];
-            }
+            std::copy(&t.name[0], &t.name[127], &temp[0]);
             task_buffer.push_back({t});
             change_flag = true;
         }
