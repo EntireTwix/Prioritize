@@ -1,5 +1,5 @@
 #include <fstream>
-#include "updates.hpp"
+#include "file_io.hpp"
 #include "task.hpp"
 #include "enums.hpp"
 #include "imgui.h"
@@ -184,7 +184,7 @@ void my_display_code()
             {
                 ImGui::TableNextRow();
                 ImGui::TableSetColumnIndex(0);
-                ImGui::Checkbox((std::string("##") + task_buffer[j].name + std::to_string(j)).c_str(), &task_buffer[j].select);
+                ImGui::Checkbox((std::string("##") + task_buffer[j].name).c_str(), &task_buffer[j].select);
                 ImGui::SameLine();
                 ImGui::InputText(("##name of " + std::to_string(j)).c_str(), task_buffer[j].name, 128);
                 for (int i = 0; i < values.size(); ++i)
@@ -283,17 +283,6 @@ void my_display_code()
         }
         ImGui::End();
     }
-
-    if (update_active)
-    {
-        ImGui::Begin("Update Available", &update_active, default_flags);
-
-        ImGui::TextColored(ImVec4{0.2, 1.0, 0.2, 1.0}, "There is an update available: %s", current_release.tag_name.c_str());
-        ImGui::Text("Link: '%s'", current_release.html_url.c_str());
-        ImGui::Text("Released by %s at %s", current_release.author.login.c_str(), current_release.published_at.c_str());
-
-        ImGui::End();
-    }
 }
 
 void glut_display_func()
@@ -320,7 +309,6 @@ void glut_display_func()
 
 int main(int argc, char **argv)
 {
-    CheckForUpdates();
     glutInit(&argc, argv);
 #ifdef __FREEGLUT_EXT_H__
     glutSetOption(GLUT_ACTION_ON_WINDOW_CLOSE, GLUT_ACTION_GLUTMAINLOOP_RETURNS);
