@@ -184,7 +184,7 @@ void my_display_code()
             {
                 ImGui::TableNextRow();
                 ImGui::TableSetColumnIndex(0);
-                ImGui::Checkbox((std::string("##") + task_buffer[j].name).c_str(), &task_buffer[j].select);
+                ImGui::Checkbox((std::string("##") + task_buffer[j].name + std::to_string(j)).c_str(), &task_buffer[j].select);
                 ImGui::SameLine();
                 ImGui::InputText(("##name of " + std::to_string(j)).c_str(), task_buffer[j].name, 128);
                 for (int i = 0; i < values.size(); ++i)
