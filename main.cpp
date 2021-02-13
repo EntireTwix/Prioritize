@@ -24,11 +24,12 @@ static const ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
 static constexpr ImGuiWindowFlags window_flags = ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_MenuBar | ImGuiWindowFlags_NoTitleBar;
 static constexpr ImGuiWindowFlags default_flags = ImGuiWindowFlags_NoCollapse;
 static constexpr ImGuiTableFlags table_settings = ImGuiTableFlags_BordersInnerH | ImGuiTableFlags_BordersInnerV | ImGuiTableFlags_BordersOuterV | ImGuiTableFlags_BordersInnerV | ImGuiTableFlags_BordersOuterH;
-static bool save_active = false;
 static bool open_active = false;
+static bool save_active = false;
 static bool task_active = false;
 static bool val_active = false;
 static bool enums_active = false;
+static char open_locationbff[128] = "";
 static const char *elems_names[] = {"VirtuallyNone",
                                     "VeryLow",
                                     "Low",
@@ -36,6 +37,11 @@ static const char *elems_names[] = {"VirtuallyNone",
                                     "High",
                                     "VeryHigh",
                                     "ExtremelyHigh"};
+
+inline void AutoSave()
+{
+    Save(std::string(open_locationbff) + "/tasks.json", task_buffer) && Save(std::string(open_locationbff) + "/values.json", values) && Save(std::string(open_locationbff) + "/enums.json", enumFloats);
+}
 
 void my_display_code()
 {
@@ -100,7 +106,7 @@ void my_display_code()
     }
     ImGui::End();
 
-    //saving
+    // //saving
     if (save_active)
     {
         static char save_locationbff[128] = "";
@@ -129,13 +135,16 @@ void my_display_code()
     //opening
     if (open_active)
     {
-        static char open_locationbff[128] = "";
         static bool error_flag = false;
 
         ImGui::Begin("Open Window", &open_active, default_flags); //reuses flags
         ImGui::InputTextWithHint("folder path", "ex: \"homework\"", open_locationbff, IM_ARRAYSIZE(open_locationbff));
         if (ImGui::Button("Open"))
         {
+            if (task_buffer.size() || values.size())
+            {
+                AutoSave();
+            }
             if (Load(std::string(open_locationbff) + "/values.json", values) && Load(std::string(open_locationbff) + "/tasks.json", task_buffer) && Load(std::string(open_locationbff) + "/enums.json", enumFloats))
             {
                 open_active = false;
@@ -330,6 +339,9 @@ int main(int argc, char **argv)
     ImGui_ImplOpenGL2_Shutdown();
     ImGui_ImplGLUT_Shutdown();
     ImGui::DestroyContext();
+
+    // Saving
+    AutoSave();
 
     return 0;
 }
