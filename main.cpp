@@ -40,7 +40,10 @@ static const char *elems_names[] = {"VirtuallyNone",
 
 inline void AutoSave()
 {
-    Save(std::string(last_open) + "/tasks.json", task_buffer) && Save(std::string(last_open) + "/values.json", values) && Save(std::string(last_open) + "/enums.json", enumFloats);
+    if (strcmp(last_open, ""))
+    {
+        Save(std::string(last_open) + "/tasks.json", task_buffer) && Save(std::string(last_open) + "/values.json", values) && Save(std::string(last_open) + "/enums.json", enumFloats);
+    }
 }
 
 void my_display_code()
