@@ -29,7 +29,7 @@ static bool save_active = false;
 static bool task_active = false;
 static bool val_active = false;
 static bool enums_active = false;
-static char open_locationbff[128] = "";
+static char last_open[128] = "";
 static const char *elems_names[] = {"VirtuallyNone",
                                     "VeryLow",
                                     "Low",
@@ -40,7 +40,7 @@ static const char *elems_names[] = {"VirtuallyNone",
 
 inline void AutoSave()
 {
-    Save(std::string(open_locationbff) + "/tasks.json", task_buffer) && Save(std::string(open_locationbff) + "/values.json", values) && Save(std::string(open_locationbff) + "/enums.json", enumFloats);
+    Save(std::string(last_open) + "/tasks.json", task_buffer) && Save(std::string(last_open) + "/values.json", values) && Save(std::string(last_open) + "/enums.json", enumFloats);
 }
 
 void my_display_code()
@@ -135,6 +135,7 @@ void my_display_code()
     //opening
     if (open_active)
     {
+        static char open_locationbff[128] = "";
         static bool error_flag = false;
 
         ImGui::Begin("Open Window", &open_active, default_flags); //reuses flags
@@ -149,6 +150,7 @@ void my_display_code()
             {
                 open_active = false;
                 change_flag = true;
+                std::copy(&open_locationbff[0], &open_locationbff[127], &last_open[0]);
             }
             else
             {
@@ -172,7 +174,7 @@ void my_display_code()
         if (ImGui::Button("Add"))
         {
             static Task t;
-            std::copy(&t.name[0], &t.name[127], &temp[0]);
+            std::copy(&temp[0], &temp[127], &t.name[0]);
             task_buffer.push_back({t});
             change_flag = true;
         }
@@ -215,8 +217,6 @@ void my_display_code()
                 if (task_buffer[i].select)
                 {
                     task_buffer.erase(task_buffer.begin() + i);
-                    //std::cout << "erasing " << i << '\n'
-                    //          << "size is now " << task_buffer.size() << '\n';
                     change_flag = true;
                 }
             }
