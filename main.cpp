@@ -12,6 +12,8 @@
 #include <GL/freeglut.h>
 #elif __linux__
 #include <GL/freeglut.h>
+#elif __FreeBSD__
+#include <GL/glut.h>
 #else
 #error "Unsupported Compiler"
 #endif
