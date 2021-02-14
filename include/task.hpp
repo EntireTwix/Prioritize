@@ -27,10 +27,7 @@ void to_json(json &j, const Task &t)
 void from_json(const json &j, Task &t)
 {
     std::string temp_str = j["name"];
-    if (temp_str.size() > 128)
-    {
-        temp_str.resize(128);
-    }
+    temp_str.resize(128);
     for (uint8_t i = 0; i < temp_str.size(); ++i)
     {
         if (temp_str[i] == '_')

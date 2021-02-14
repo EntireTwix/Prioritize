@@ -26,11 +26,12 @@ static const ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
 static constexpr ImGuiWindowFlags window_flags = ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_MenuBar | ImGuiWindowFlags_NoTitleBar;
 static constexpr ImGuiWindowFlags default_flags = ImGuiWindowFlags_NoCollapse;
 static constexpr ImGuiTableFlags table_settings = ImGuiTableFlags_BordersInnerH | ImGuiTableFlags_BordersInnerV | ImGuiTableFlags_BordersOuterV | ImGuiTableFlags_BordersInnerV | ImGuiTableFlags_BordersOuterH;
-static bool save_active = false;
 static bool open_active = false;
+static bool save_active = false;
 static bool task_active = false;
 static bool val_active = false;
 static bool enums_active = false;
+static char last_open[128] = "";
 static const char *elems_names[] = {"VirtuallyNone",
                                     "VeryLow",
                                     "Low",
@@ -38,6 +39,14 @@ static const char *elems_names[] = {"VirtuallyNone",
                                     "High",
                                     "VeryHigh",
                                     "ExtremelyHigh"};
+
+inline void AutoSave()
+{
+    if (strcmp(last_open, ""))
+    {
+        Save(std::string(last_open) + "/tasks.json", task_buffer) && Save(std::string(last_open) + "/values.json", values) && Save(std::string(last_open) + "/enums.json", enumFloats);
+    }
+}
 
 void my_display_code()
 {
@@ -102,7 +111,7 @@ void my_display_code()
     }
     ImGui::End();
 
-    //saving
+    // //saving
     if (save_active)
     {
         static char save_locationbff[128] = "";
@@ -138,10 +147,15 @@ void my_display_code()
         ImGui::InputTextWithHint("folder path", "ex: \"homework\"", open_locationbff, IM_ARRAYSIZE(open_locationbff));
         if (ImGui::Button("Open"))
         {
+            if (task_buffer.size() || values.size())
+            {
+                AutoSave();
+            }
             if (Load(std::string(open_locationbff) + "/values.json", values) && Load(std::string(open_locationbff) + "/tasks.json", task_buffer) && Load(std::string(open_locationbff) + "/enums.json", enumFloats))
             {
                 open_active = false;
                 change_flag = true;
+                std::copy(&open_locationbff[0], &open_locationbff[127], &last_open[0]);
             }
             else
             {
@@ -165,7 +179,7 @@ void my_display_code()
         if (ImGui::Button("Add"))
         {
             static Task t;
-            std::copy(&t.name[0], &t.name[127], &temp[0]);
+            std::copy(&temp[0], &temp[127], &t.name[0]);
             task_buffer.push_back({t});
             change_flag = true;
         }
@@ -189,9 +203,9 @@ void my_display_code()
                 for (int i = 0; i < values.size(); ++i)
                 {
                     ImGui::TableSetColumnIndex(i + 1);
-                    ImGui::SliderInt(("##" + std::to_string(i) + ':' + std::to_string(j)).c_str(), &task_buffer[j].task_values[i], 0, 6, elems_names[task_buffer[j].task_values[i]]);
+                    ImGui::SliderInt(("##" + (char)i + ':' + std::to_string(j)).c_str(), &task_buffer[j].task_values[i], 0, 6, elems_names[task_buffer[j].task_values[i]]);
                     ImGui::SameLine();
-                    ImGui::ColorButton(("##" + std::to_string(i) + ':' + std::to_string(j)).c_str(), ImVec4((float)(enumFloats[task_buffer[j].task_values[i]] / 140) * 2.5, 1 - (float)(enumFloats[task_buffer[j].task_values[i]] / 140), 0.0f, 1.0f), 0, ImVec2(35, 25));
+                    ImGui::ColorButton(("##" + (char)i + ':' + std::to_string(j)).c_str(), ImVec4((float)(enumFloats[task_buffer[j].task_values[i]] / 140) * 2.5, 1 - (float)(enumFloats[task_buffer[j].task_values[i]] / 140), 0.0f, 1.0f), 0, ImVec2(35, 25));
                 }
             }
             ImGui::EndTable();
@@ -208,8 +222,6 @@ void my_display_code()
                 if (task_buffer[i].select)
                 {
                     task_buffer.erase(task_buffer.begin() + i);
-                    //std::cout << "erasing " << i << '\n'
-                    //          << "size is now " << task_buffer.size() << '\n';
                     change_flag = true;
                 }
             }
@@ -237,7 +249,7 @@ void my_display_code()
         for (int i = 0; i < values.size(); ++i)
         {
             ImGui::Text(values[i].name.c_str());
-            ImGui::Checkbox(("##" + std::to_string(i)).c_str(), &values[i].select);
+            ImGui::Checkbox((std::string("##") + (char)i).c_str(), &values[i].select);
             ImGui::SameLine();
             if (ImGui::SliderFloat(("##S" + values[i].name).c_str(), &values[i].weight, 0, 2, "%.2f"))
             {
@@ -274,7 +286,7 @@ void my_display_code()
         ImGui::PlotLines("##Enums Ploted", enumFloats.data(), enumFloats.size());
         for (int i = 0; i < IM_ARRAYSIZE(elems_names); ++i)
         {
-            if (ImGui::VSliderFloat((std::string("##") + std::to_string(i)).c_str(), ImVec2(21, 256), &enumFloats[i], 0, 256))
+            if (ImGui::VSliderFloat((std::string("##") + (char)i).c_str(), ImVec2(21, 256), &enumFloats[i], 0, 256))
             {
                 change_flag = true;
             }
@@ -332,6 +344,9 @@ int main(int argc, char **argv)
     ImGui_ImplOpenGL2_Shutdown();
     ImGui_ImplGLUT_Shutdown();
     ImGui::DestroyContext();
+
+    // Saving
+    AutoSave();
 
     return 0;
 }
