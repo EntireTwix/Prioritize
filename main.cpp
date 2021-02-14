@@ -201,9 +201,9 @@ void my_display_code()
                 for (int i = 0; i < values.size(); ++i)
                 {
                     ImGui::TableSetColumnIndex(i + 1);
-                    ImGui::SliderInt(("##" + std::to_string(i) + ':' + std::to_string(j)).c_str(), &task_buffer[j].task_values[i], 0, 6, elems_names[task_buffer[j].task_values[i]]);
+                    ImGui::SliderInt(("##" + (char)i + ':' + std::to_string(j)).c_str(), &task_buffer[j].task_values[i], 0, 6, elems_names[task_buffer[j].task_values[i]]);
                     ImGui::SameLine();
-                    ImGui::ColorButton(("##" + std::to_string(i) + ':' + std::to_string(j)).c_str(), ImVec4((float)(enumFloats[task_buffer[j].task_values[i]] / 140) * 2.5, 1 - (float)(enumFloats[task_buffer[j].task_values[i]] / 140), 0.0f, 1.0f), 0, ImVec2(35, 25));
+                    ImGui::ColorButton(("##" + (char)i + ':' + std::to_string(j)).c_str(), ImVec4((float)(enumFloats[task_buffer[j].task_values[i]] / 140) * 2.5, 1 - (float)(enumFloats[task_buffer[j].task_values[i]] / 140), 0.0f, 1.0f), 0, ImVec2(35, 25));
                 }
             }
             ImGui::EndTable();
@@ -247,7 +247,7 @@ void my_display_code()
         for (int i = 0; i < values.size(); ++i)
         {
             ImGui::Text(values[i].name.c_str());
-            ImGui::Checkbox(("##" + std::to_string(i)).c_str(), &values[i].select);
+            ImGui::Checkbox((std::string("##") + (char)i).c_str(), &values[i].select);
             ImGui::SameLine();
             if (ImGui::SliderFloat(("##S" + values[i].name).c_str(), &values[i].weight, 0, 2, "%.2f"))
             {
@@ -284,7 +284,7 @@ void my_display_code()
         ImGui::PlotLines("##Enums Ploted", enumFloats.data(), enumFloats.size());
         for (int i = 0; i < IM_ARRAYSIZE(elems_names); ++i)
         {
-            if (ImGui::VSliderFloat((std::string("##") + std::to_string(i)).c_str(), ImVec2(21, 256), &enumFloats[i], 0, 256))
+            if (ImGui::VSliderFloat((std::string("##") + (char)i).c_str(), ImVec2(21, 256), &enumFloats[i], 0, 256))
             {
                 change_flag = true;
             }
