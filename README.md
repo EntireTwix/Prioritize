@@ -1,7 +1,7 @@
 # Priotize
 
 just a quick test program as I mess around with imgui, although thats not to say this program lacks utility for simple task prioritization.
-This program is targetted towards those who want to prioritize there academic or recreational lifes.
+This program is targetted towards those who want to prioritize their academic or recreational lifes.
 ![full example](https://github.com/EntireTwix/PrioritizationGUI/blob/main/primary_image.png)
 
 ## Usage
