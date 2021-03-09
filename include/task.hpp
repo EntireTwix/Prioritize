@@ -50,42 +50,49 @@ void from_json(const json &j, Task &t)
 }
 
 static std::vector<Task> task_buffer;
+static bool change_flag = true;
 
-void UpdateScores() noexcept
+inline void UpdateScores() noexcept
 {
-    float sum, total_sum = 0;
-    for (Task &t : task_buffer)
+    if (change_flag) //only updates when changes are made
     {
-        sum = 0;
-
-        //resize
-        t.task_values.resize(values.size()); //so that newly added values dont throw with old tasks
-
-        //sum each
-        if (!t.state)
+        float sum, total_sum = 0;
+        for (Task &t : task_buffer)
         {
-            for (int i = 0; i < values.size(); ++i)
+            sum = 0;
+
+            //resize
+            t.task_values.resize(values.size()); //so that newly added values dont throw with old tasks
+
+            //sum each
+            if (!t.state)
             {
-                sum += enum_floats[t.task_values[i]] * values[i].weight; //assigned enum * weight
+                for (int i = 0; i < values.size(); ++i)
+                {
+                    sum += enum_floats[t.task_values[i]] * values[i].weight; //assigned enum * weight
+                }
+                t.score = sum;
+                total_sum += sum; //for softmax
             }
-            t.score = sum;
-            total_sum += sum; //for softmax
+            else
+            {
+                t.score = 0;
+            }
         }
-        else
-        {
-            t.score = 0;
-        }
-    }
 
-    //sort
-    std::sort(task_buffer.begin(), task_buffer.end());
+        //sort
+        std::sort(task_buffer.begin(), task_buffer.end());
 
-    //softmax
-    for (Task &t : task_buffer)
-    {
-        if (t.score) //preventing -MAX_INT bug
+        //softmax
+        for (Task &t : task_buffer)
         {
-            t.score /= total_sum;
+            if (t.score) //preventing -MAX_INT bug
+            {
+                t.score /= total_sum;
+            }
         }
+
+        //back to no change
+        change_flag = false;
     }
 }

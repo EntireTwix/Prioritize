@@ -28,13 +28,17 @@ void from_json(const json &j, Value &v)
 static std::vector<Value> values;
 static std::array<float, 7> enum_floats{0, 7.5, 18.5, 33, 60, 90, 140};
 static std::array<std::pair<float, float>, 7> enum_colors;
+static bool enum_change = true;
 
 inline void UpdateColors() noexcept
 {
-
-    for (uint_fast8_t i = 0; i < 7; ++i)
+    if (enum_change)
     {
-        enum_colors[i] = {(enum_floats[i] / 140) * 2.5, 1 - (float)(enum_floats[i] / 140)};
+        for (uint_fast8_t i = 0; i < 7; ++i)
+        {
+            enum_colors[i] = {(enum_floats[i] / 140) * 2.5, 1 - (float)(enum_floats[i] / 140)};
+        }
+        enum_change = false;
     }
 }
 

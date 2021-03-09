@@ -88,13 +88,14 @@ inline void my_display_code() noexcept
     {
         ImGui::TableSetupColumn("Name", ImGuiTableColumnFlags_WidthStretch);
         ImGui::TableSetupColumn("Score", ImGuiTableColumnFlags_WidthFixed);
+        UpdateScores();
         for (Task &t : task_buffer)
         {
             ImGui::TableNextRow();
             ImGui::TableSetColumnIndex(0);
             if (ImGui::Checkbox(t.name, &t.state)) //if there is a change
             {
-                UpdateScores();
+                change_flag = true;
             }
             ImGui::TableSetColumnIndex(1);
             if (!t.state)
@@ -153,7 +154,7 @@ inline void my_display_code() noexcept
             if (Load(std::string(open_locationbff) + "/values.json", values) && Load(std::string(open_locationbff) + "/tasks.json", task_buffer) && Load(std::string(open_locationbff) + "/enums.json", enum_floats))
             {
                 open_active = false;
-                UpdateScores();
+                change_flag = true;
                 std::copy(&open_locationbff[0], &open_locationbff[127], &last_open[0]);
             }
             else
@@ -180,7 +181,7 @@ inline void my_display_code() noexcept
             static Task t;
             std::copy(&temp[0], &temp[127], &t.name[0]);
             task_buffer.push_back({t});
-            UpdateScores();
+            change_flag = true;
         }
 
         if (ImGui::BeginTable("##table1", 1 + values.size(), table_settings))
@@ -210,7 +211,7 @@ inline void my_display_code() noexcept
         }
         if (ImGui::Button("Update"))
         {
-            UpdateScores();
+            change_flag = true;
         }
         ImGui::SameLine();
         if (ImGui::Button("Delete Selected"))
@@ -220,7 +221,7 @@ inline void my_display_code() noexcept
                 if (task_buffer[i].select)
                 {
                     task_buffer.erase(task_buffer.begin() + i);
-                    UpdateScores();
+                    change_flag = true;
                 }
             }
         }
@@ -240,7 +241,7 @@ inline void my_display_code() noexcept
         if (ImGui::Button("Add"))
         {
             values.push_back({temp, temp_weight});
-            UpdateScores();
+            change_flag = true;
         }
         ImGui::NewLine();
 
@@ -251,12 +252,12 @@ inline void my_display_code() noexcept
             ImGui::SameLine();
             if (ImGui::SliderFloat(("##S" + values[i].name).c_str(), &values[i].weight, 0, 2, "%.2f"))
             {
-                UpdateScores();
+                change_flag = true;
             }
             ImGui::SameLine();
             if (ImGui::InputFloat(("##I" + values[i].name).c_str(), &values[i].weight, 0, 2, "%.2f"))
             {
-                UpdateScores();
+                change_flag = true;
             }
             ImGui::NewLine();
         }
@@ -271,7 +272,7 @@ inline void my_display_code() noexcept
                     {
                         t.task_values.erase(t.task_values.begin() + i); //removing refs
                     }
-                    UpdateScores();
+                    change_flag = true;
                 }
             }
         }
@@ -280,14 +281,15 @@ inline void my_display_code() noexcept
 
     if (enums_active)
     {
+        UpdateColors();
         ImGui::Begin("Edit Enums", &enums_active, default_flags);
         ImGui::PlotLines("##Enums Ploted", enum_floats.data(), enum_floats.size());
         for (int i = 0; i < IM_ARRAYSIZE(elems_names); ++i)
         {
             if (ImGui::VSliderFloat((std::string("##") + std::to_string(i)).c_str(), ImVec2(21, 256), &enum_floats[i], 0, 256))
             {
-                UpdateScores();
-                UpdateColors();
+                change_flag = true;
+                enum_change = true;
             }
             ImGui::SameLine();
         }
