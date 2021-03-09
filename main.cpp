@@ -95,7 +95,7 @@ inline void my_display_code() noexcept
             ImGui::TableSetColumnIndex(0);
             if (ImGui::Checkbox(t.name, &t.state)) //if there is a change
             {
-                change_flag = true;
+                UpdateScores();
             }
             ImGui::TableSetColumnIndex(1);
             if (!t.state)
@@ -154,7 +154,7 @@ inline void my_display_code() noexcept
             if (Load(std::string(open_locationbff) + "/values.json", values) && Load(std::string(open_locationbff) + "/tasks.json", task_buffer) && Load(std::string(open_locationbff) + "/enums.json", enum_floats))
             {
                 open_active = false;
-                change_flag = true;
+                UpdateScores();
                 std::copy(&open_locationbff[0], &open_locationbff[127], &last_open[0]);
             }
             else
@@ -181,7 +181,7 @@ inline void my_display_code() noexcept
             static Task t;
             std::copy(&temp[0], &temp[127], &t.name[0]);
             task_buffer.push_back({t});
-            change_flag = true;
+            UpdateScores();
         }
 
         if (ImGui::BeginTable("##table1", 1 + values.size(), table_settings))
@@ -211,7 +211,7 @@ inline void my_display_code() noexcept
         }
         if (ImGui::Button("Update"))
         {
-            change_flag = true;
+            UpdateScores();
         }
         ImGui::SameLine();
         if (ImGui::Button("Delete Selected"))
@@ -221,7 +221,7 @@ inline void my_display_code() noexcept
                 if (task_buffer[i].select)
                 {
                     task_buffer.erase(task_buffer.begin() + i);
-                    change_flag = true;
+                    UpdateScores();
                 }
             }
         }
@@ -241,7 +241,7 @@ inline void my_display_code() noexcept
         if (ImGui::Button("Add"))
         {
             values.push_back({temp, temp_weight});
-            change_flag = true;
+            UpdateScores();
         }
         ImGui::NewLine();
 
@@ -252,12 +252,12 @@ inline void my_display_code() noexcept
             ImGui::SameLine();
             if (ImGui::SliderFloat(("##S" + values[i].name).c_str(), &values[i].weight, 0, 2, "%.2f"))
             {
-                change_flag = true;
+                UpdateScores();
             }
             ImGui::SameLine();
             if (ImGui::InputFloat(("##I" + values[i].name).c_str(), &values[i].weight, 0, 2, "%.2f"))
             {
-                change_flag = true;
+                UpdateScores();
             }
             ImGui::NewLine();
         }
@@ -272,7 +272,7 @@ inline void my_display_code() noexcept
                     {
                         t.task_values.erase(t.task_values.begin() + i); //removing refs
                     }
-                    change_flag = true;
+                    UpdateScores();
                 }
             }
         }
@@ -288,8 +288,8 @@ inline void my_display_code() noexcept
         {
             if (ImGui::VSliderFloat((std::string("##") + std::to_string(i)).c_str(), ImVec2(21, 256), &enum_floats[i], 0, 256))
             {
-                change_flag = true;
-                enum_change = true;
+                UpdateScores();
+                UpdateColors();
             }
             ImGui::SameLine();
         }
