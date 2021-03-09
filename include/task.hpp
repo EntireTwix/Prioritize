@@ -12,13 +12,13 @@ struct Task
     std::vector<int> task_values; //x being the value index, the int being the enum
 
     Task() = default;
-    bool operator<(const Task &t) const
+    bool operator<(const Task &t) const noexcept
     {
         return this->score > t.score;
     }
 };
 
-void to_json(json &j, const Task &t)
+void to_json(json &j, const Task &t) noexcept
 {
     std::string temp_str = t.name;
     std::replace(temp_str.begin(), temp_str.end(), ' ', '_');
@@ -28,7 +28,7 @@ void from_json(const json &j, Task &t)
 {
     std::string temp_str = j["name"];
     temp_str.resize(128);
-    for (uint8_t i = 0; i < temp_str.size(); ++i)
+    for (uint_fast8_t i = 0; i < temp_str.size(); ++i)
     {
         if (temp_str[i] == '_')
         {
@@ -52,7 +52,7 @@ void from_json(const json &j, Task &t)
 static std::vector<Task> task_buffer;
 static bool change_flag = true;
 
-inline void UpdateScores()
+inline void UpdateScores() noexcept
 {
     if (change_flag) //only updates when changes are made
     {
@@ -69,7 +69,7 @@ inline void UpdateScores()
             {
                 for (int i = 0; i < values.size(); ++i)
                 {
-                    sum += enumFloats[t.task_values[i]] * values[i].weight; //assigned enum * weight
+                    sum += enum_floats[t.task_values[i]] * values[i].weight; //assigned enum * weight
                 }
                 t.score = sum;
                 total_sum += sum; //for softmax

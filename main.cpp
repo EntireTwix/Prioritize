@@ -40,15 +40,15 @@ static const char *elems_names[] = {"VirtuallyNone",
                                     "VeryHigh",
                                     "ExtremelyHigh"};
 
-inline void AutoSave()
+inline void AutoSave() noexcept
 {
     if (strcmp(last_open, ""))
     {
-        Save(std::string(last_open) + "/tasks.json", task_buffer) && Save(std::string(last_open) + "/values.json", values) && Save(std::string(last_open) + "/enums.json", enumFloats);
+        Save(std::string(last_open) + "/tasks.json", task_buffer) && Save(std::string(last_open) + "/values.json", values) && Save(std::string(last_open) + "/enums.json", enum_floats);
     }
 }
 
-void my_display_code()
+inline void my_display_code() noexcept
 {
     //dashboard
     ImGui::Begin("##Dashboard", nullptr, window_flags);
@@ -121,7 +121,7 @@ void my_display_code()
         ImGui::InputTextWithHint("folder path", "ex: \"homework\"", save_locationbff, IM_ARRAYSIZE(save_locationbff));
         if (ImGui::Button("Save"))
         {
-            if (Save(std::string(save_locationbff) + "/tasks.json", task_buffer) && Save(std::string(save_locationbff) + "/values.json", values) && Save(std::string(save_locationbff) + "/enums.json", enumFloats))
+            if (Save(std::string(save_locationbff) + "/tasks.json", task_buffer) && Save(std::string(save_locationbff) + "/values.json", values) && Save(std::string(save_locationbff) + "/enums.json", enum_floats))
             {
                 save_active = false;
             }
@@ -151,7 +151,7 @@ void my_display_code()
             {
                 AutoSave();
             }
-            if (Load(std::string(open_locationbff) + "/values.json", values) && Load(std::string(open_locationbff) + "/tasks.json", task_buffer) && Load(std::string(open_locationbff) + "/enums.json", enumFloats))
+            if (Load(std::string(open_locationbff) + "/values.json", values) && Load(std::string(open_locationbff) + "/tasks.json", task_buffer) && Load(std::string(open_locationbff) + "/enums.json", enum_floats))
             {
                 open_active = false;
                 change_flag = true;
@@ -192,7 +192,6 @@ void my_display_code()
                 ImGui::TableSetupColumn(v.name.c_str(), ImGuiTableColumnFlags_WidthFixed, 150);
             }
             ImGui::TableHeadersRow();
-            UpdateScores();
             for (size_t j = 0; j < task_buffer.size(); ++j)
             {
                 ImGui::TableNextRow();
@@ -205,7 +204,7 @@ void my_display_code()
                     ImGui::TableSetColumnIndex(i + 1);
                     ImGui::SliderInt(("##" + std::to_string(i) + ':' + std::to_string(j)).c_str(), &task_buffer[j].task_values[i], 0, 6, elems_names[task_buffer[j].task_values[i]]);
                     ImGui::SameLine();
-                    ImGui::ColorButton(("##" + std::to_string(i) + ':' + std::to_string(j)).c_str(), ImVec4((float)(enumFloats[task_buffer[j].task_values[i]] / 140) * 2.5, 1 - (float)(enumFloats[task_buffer[j].task_values[i]] / 140), 0.0f, 1.0f), 0, ImVec2(35, 25));
+                    ImGui::ColorButton(("##" + std::to_string(i) + ':' + std::to_string(j)).c_str(), ImVec4(enum_colors[task_buffer[j].task_values[i]].first, enum_colors[task_buffer[j].task_values[i]].second, 0.0f, 1.0f), 0, ImVec2(35, 25));
                 }
             }
             ImGui::EndTable();
@@ -282,13 +281,15 @@ void my_display_code()
 
     if (enums_active)
     {
+        UpdateColors();
         ImGui::Begin("Edit Enums", &enums_active, default_flags);
-        ImGui::PlotLines("##Enums Ploted", enumFloats.data(), enumFloats.size());
+        ImGui::PlotLines("##Enums Ploted", enum_floats.data(), enum_floats.size());
         for (int i = 0; i < IM_ARRAYSIZE(elems_names); ++i)
         {
-            if (ImGui::VSliderFloat((std::string("##") + std::to_string(i)).c_str(), ImVec2(21, 256), &enumFloats[i], 0, 256))
+            if (ImGui::VSliderFloat((std::string("##") + std::to_string(i)).c_str(), ImVec2(21, 256), &enum_floats[i], 0, 256))
             {
                 change_flag = true;
+                enum_change = true;
             }
             ImGui::SameLine();
         }
@@ -296,7 +297,7 @@ void my_display_code()
     }
 }
 
-void glut_display_func()
+inline void glut_display_func() noexcept
 {
 
     // Start the Dear ImGui frame
@@ -320,6 +321,7 @@ void glut_display_func()
 
 int main(int argc, char **argv)
 {
+    UpdateColors();
     glutInit(&argc, argv);
 #ifdef __FREEGLUT_EXT_H__
     glutSetOption(GLUT_ACTION_ON_WINDOW_CLOSE, GLUT_ACTION_GLUTMAINLOOP_RETURNS);
