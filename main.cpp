@@ -88,7 +88,6 @@ inline void my_display_code() noexcept
     {
         ImGui::TableSetupColumn("Name", ImGuiTableColumnFlags_WidthStretch);
         ImGui::TableSetupColumn("Score", ImGuiTableColumnFlags_WidthFixed);
-        UpdateScores();
         for (Task &t : task_buffer)
         {
             ImGui::TableNextRow();
@@ -281,7 +280,6 @@ inline void my_display_code() noexcept
 
     if (enums_active)
     {
-        UpdateColors();
         ImGui::Begin("Edit Enums", &enums_active, default_flags);
         ImGui::PlotLines("##Enums Ploted", enum_floats.data(), enum_floats.size());
         for (int i = 0; i < IM_ARRAYSIZE(elems_names); ++i)
