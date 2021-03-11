@@ -192,6 +192,7 @@ inline void my_display_code() noexcept
                 ImGui::TableSetupColumn(v.name.c_str(), ImGuiTableColumnFlags_WidthFixed, 150);
             }
             ImGui::TableHeadersRow();
+            UpdateScores();
             for (size_t j = 0; j < task_buffer.size(); ++j)
             {
                 ImGui::TableNextRow();
@@ -204,7 +205,7 @@ inline void my_display_code() noexcept
                     ImGui::TableSetColumnIndex(i + 1);
                     ImGui::SliderInt(("##" + std::to_string(i) + ':' + std::to_string(j)).c_str(), &task_buffer[j].task_values[i], 0, 6, elems_names[task_buffer[j].task_values[i]]);
                     ImGui::SameLine();
-                    ImGui::ColorButton(("##" + std::to_string(i) + ':' + std::to_string(j)).c_str(), ImVec4(enum_colors[task_buffer[j].task_values[i]].first, enum_colors[task_buffer[j].task_values[i]].second, 0.0f, 1.0f), 0, ImVec2(35, 25));
+                    ImGui::ColorButton(("##" + std::to_string(i) + ':' + std::to_string(j)).c_str(), ImVec4((float)(enum_floats[task_buffer[j].task_values[i]] / 140) * 2.5, 1 - (float)(enum_floats[task_buffer[j].task_values[i]] / 140), 0.0f, 1.0f), 0, ImVec2(35, 25));
                 }
             }
             ImGui::EndTable();
@@ -281,7 +282,6 @@ inline void my_display_code() noexcept
 
     if (enums_active)
     {
-        UpdateColors();
         ImGui::Begin("Edit Enums", &enums_active, default_flags);
         ImGui::PlotLines("##Enums Ploted", enum_floats.data(), enum_floats.size());
         for (int i = 0; i < IM_ARRAYSIZE(elems_names); ++i)
@@ -289,7 +289,7 @@ inline void my_display_code() noexcept
             if (ImGui::VSliderFloat((std::string("##") + std::to_string(i)).c_str(), ImVec2(21, 256), &enum_floats[i], 0, 256))
             {
                 change_flag = true;
-                enum_change = true;
+                UpdateColors();
             }
             ImGui::SameLine();
         }
