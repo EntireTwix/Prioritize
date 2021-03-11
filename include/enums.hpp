@@ -33,7 +33,7 @@ inline void UpdateColors() noexcept
 {
     for (uint_fast8_t i = 0; i < 7; ++i)
     {
-        enum_colors[i] = {(enum_floats[i] / 140) * 2.5, 1 - (float)(enum_floats[i] / 140)};
+        enum_colors[i] = {(enum_floats[i] / enum_floats[6]) * 2.5, 1 - (float)(enum_floats[i] / enum_floats[6])};
     }
 }
 
