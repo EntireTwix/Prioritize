@@ -15,7 +15,7 @@ Note: for satisfaction the percentage is color cordinated, the closer to red bei
 
 ![image of multiple done dashboard](https://github.com/EntireTwix/PrioritizationGUI/blob/main/dashboard_partial.png)
 
-## Values
+### Values
 
 The way it works is there are a set of values with differing weights that are to apply to each task, this is found in `Edit->Values`
 
