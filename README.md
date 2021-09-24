@@ -63,8 +63,8 @@ sudo apt-get install libglu1-mesa-dev freeglut3-dev mesa-common-dev
 after that do
 
 ```
-git clone --recurse-submodules https://github.com/EntireTwix/PrioritizationGUI
-cd PrioritizationGUI
+git clone --recurse-submodules https://github.com/EntireTwix/Prioritize
+cd Prioritize
 mkdir build
 cd build
 cmake ..
