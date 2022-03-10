@@ -24,8 +24,7 @@ void to_json(json &j, const Value &v) noexcept
 void from_json(const json &j, Value &v)
 {
     std::string temp_str = j["name"];
-    temp_str.resize(128);
-    v.name.resize(128);
+    v.name.resize(temp_str.size());
     for (uint_fast8_t i = 0; i < temp_str.size(); ++i)
     {
         if (temp_str[i] == '_')
