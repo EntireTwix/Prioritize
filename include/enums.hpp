@@ -17,11 +17,27 @@ struct Value
 
 void to_json(json &j, const Value &v) noexcept
 {
-    j = json{{"name", v.name}, {"weight", v.weight}};
+    std::string temp_str = v.name;
+    std::replace(temp_str.begin(), temp_str.end(), ' ', '_');
+    j = json{{"name", temp_str}, {"weight", v.weight}};
 }
 void from_json(const json &j, Value &v)
 {
-    v.name = j["name"];
+    std::string temp_str = j["name"];
+    temp_str.resize(128);
+    v.name.resize(128);
+    for (uint_fast8_t i = 0; i < temp_str.size(); ++i)
+    {
+        if (temp_str[i] == '_')
+        {
+            v.name[i] = ' ';
+        }
+        else
+        {
+            v.name[i] = temp_str[i];
+        }
+    }
+    std::cout << "we got here atleast\n";
     v.weight = j["weight"];
 }
 
