@@ -60,7 +60,7 @@ inline void my_display_code() noexcept
             {
                 open_active = true;
             }
-            if (ImGui::MenuItem("Save"))
+            if (ImGui::MenuItem("Save a COPY"))
             {
                 save_active = true;
             }
@@ -119,7 +119,7 @@ inline void my_display_code() noexcept
 
         ImGui::Begin("Save Window", &save_active, default_flags);
         ImGui::InputTextWithHint("folder path", "ex: \"homework\"", save_locationbff, IM_ARRAYSIZE(save_locationbff));
-        if (ImGui::Button("Save"))
+        if (ImGui::Button("Copy"))
         {
             if (Save(std::string(save_locationbff) + "/tasks.json", task_buffer) && Save(std::string(save_locationbff) + "/values.json", values) && Save(std::string(save_locationbff) + "/enums.json", enum_floats))
             {
