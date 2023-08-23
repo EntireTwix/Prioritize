@@ -32,9 +32,9 @@ You can edit the Tasks and their enumerations for each value on the `Edit->Tasks
 
 ### Saving&Loading
 
-to save/load use `File->Open` and `File->Save` respectively, you will be prompted with the option to enter in a folder path, this folder path must exist beforehand
+to save/load use `File->Open` and `File->Save a Copy` respectively, you will be prompted with the option to enter in a folder path, this folder path must exist beforehand
 
-After having Opened from a location upon closing the program will Auto-Save, `File->Save` will explicitly save a copy in another location but Autosave will still be in effect on the first location
+After having Opened from a location upon closing the program will Auto-Save, `File->Save a Copy` will explicitly save a copy in another location but Autosave will still be in effect on the first location
 
 ### Enums
 
