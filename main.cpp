@@ -32,13 +32,13 @@ static bool task_active = false;
 static bool val_active = false;
 static bool enums_active = false;
 static char last_open[128] = "";
-static const char *elems_names[] = {"VirtuallyNone",
-                                    "VeryLow",
-                                    "Low",
-                                    "Medium",
-                                    "High",
-                                    "VeryHigh",
-                                    "ExtremelyHigh"};
+static const char *elems_names[] = {"---",
+                                    "--",
+                                    "-",
+                                    "",
+                                    "+",
+                                    "++",
+                                    "+++"};
 
 inline void AutoSave() noexcept
 {

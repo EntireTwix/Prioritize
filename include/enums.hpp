@@ -36,7 +36,6 @@ void from_json(const json &j, Value &v)
             v.name[i] = temp_str[i];
         }
     }
-    std::cout << "we got here atleast\n";
     v.weight = j["weight"];
 }
 
